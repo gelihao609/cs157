@@ -6,7 +6,6 @@ public class DataSourceTester {
 	public static void main (String [] args)
 	 {
 	        DataSource ds = DataSourceFactory.getMySQLDataSource();     
-	       
 	        Connection connection =  null; 
 	        try {
 	    		connection = ds.getConnection(); 
