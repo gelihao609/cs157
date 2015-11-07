@@ -9,7 +9,7 @@ import javax.sql.DataSource;
  */
 public class TestQuery {
 	
-	public static void main(String[] args) {
+	public String test(String cmd) {
         DataSource ds = DataSourceFactory.getMySQLDataSource();     
         Connection conn = null;
         Statement stmt = null;
@@ -17,13 +17,11 @@ public class TestQuery {
         	conn = ds.getConnection(); 
         	stmt = conn.createStatement();
         	QuerySet q = new QuerySet();
-        	//View inventory
-        	System.out.println(q.view_inventory(stmt));
-        	
-        	
-        	
-        	
-        	
+    		//View inventory
+        	if(cmd.equals("view_inventory"))
+        	{
+        		return q.view_inventory(stmt);
+        	}        	        	
     	} catch (SQLException e) {
     		System.out.println("Connection Failed! Check output console");
     		e.printStackTrace();
@@ -45,5 +43,6 @@ public class TestQuery {
                se.printStackTrace();
             }//end finally try
 	}
+		return "Finished";
 }
 }
