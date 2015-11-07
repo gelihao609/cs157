@@ -1,25 +1,29 @@
 package test;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.sql.DataSource;
-
+/*
+ * run queries from QuerySet
+ */
 public class TestQuery {
-
+	
 	public static void main(String[] args) {
         DataSource ds = DataSourceFactory.getMySQLDataSource();     
         Connection conn = null;
         Statement stmt = null;
-        ResultSet rs = null;
         try {
         	conn = ds.getConnection(); 
         	stmt = conn.createStatement();
-            rs = stmt.executeQuery("select first_name, last_name from employee");
-            while(rs.next()){
-                System.out.println("User firstName="+rs.getString("first_name")+", lastName="+rs.getString("last_name"));
-            }
+        	QuerySet q = new QuerySet();
+        	//View inventory
+        	System.out.println(q.view_inventory(stmt));
+        	
+        	
+        	
+        	
+        	
     	} catch (SQLException e) {
     		System.out.println("Connection Failed! Check output console");
     		e.printStackTrace();
