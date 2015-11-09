@@ -3,13 +3,9 @@ package controller;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import java.awt.BorderLayout;
 import javax.swing.JButton;
-import javax.swing.JTextField;
-
 import backend.ExeQuery;
 
-import javax.swing.JScrollBar;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -71,20 +67,29 @@ public class ViewPanel {
 		btnViewInventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ExeQuery test = new ExeQuery();
-				textArea.setText(test.test("view_inventory"));
+				textArea.setText(test.test("view_inventory",null));
 			}
 		});
-		
-		
+				
 		JButton btnViewTransactions = new JButton("view Trans.");
 		btnViewTransactions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			ExeQuery test = new ExeQuery();
-			textArea.setText(test.test("view_transactions"));
+			textArea.setText(test.test("view_transactions",null));
 			}
 		});
 		btnViewTransactions.setBounds(456, 51, 115, 25);
 		frame.getContentPane().add(btnViewTransactions);
+		
+		JButton btnViewSupplier = new JButton("view Supplier");
+		btnViewSupplier.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ExeQuery test = new ExeQuery();
+				textArea.setText(test.test("view_suppliers",null));
+			}
+		});
+		btnViewSupplier.setBounds(456, 90, 115, 25);
+		frame.getContentPane().add(btnViewSupplier);
 
 	}
 }

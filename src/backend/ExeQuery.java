@@ -1,6 +1,7 @@
 package backend;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.sql.DataSource;
@@ -9,7 +10,7 @@ import javax.sql.DataSource;
  */
 public class ExeQuery {
 	
-	public String test(String cmd) {
+	public String test(String cmd, Object arg) {
         DataSource ds = DataSourceFactory.getMySQLDataSource();     
         Connection conn = null;
         Statement stmt = null;
@@ -30,7 +31,13 @@ public class ExeQuery {
         	//call archive
         	if(cmd.equals("archive"))
         	{
-            	q.archive(stmt,"2015-11-08");
+            	java.util.Date cutOffDate = (java.util.Date) arg;
+        		q.archive(conn,cutOffDate);
+        	}
+        	//view supplier
+        	if(cmd.equals("view_suppliers"))
+        	{
+        		return q.view_suppliers(stmt);
         	}
         	
     	} catch (SQLException e) {

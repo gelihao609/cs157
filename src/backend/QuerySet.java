@@ -1,9 +1,14 @@
 package backend;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Date;
+
+import javax.swing.JOptionPane;
 /*
  * put all queries here and call from testQuery
  */
@@ -21,7 +26,17 @@ public class QuerySet {
         }
 		return result;
 	}
-	
+	public String view_suppliers(Statement stmt) throws SQLException
+	{
+		ResultSet rs = stmt.executeQuery(
+				  "SELECT *"
+				+ "FROM supplier");
+		String result ="Name\tPhone Number\tID\n";
+		while(rs.next()){
+			result+=rs.getString("supplier_name")+"\t"+rs.getString("phone_num")+"\t"+rs.getInt("supplier_id")+"\n";
+        }
+		return result;
+	}
 	public String view_transactions(Statement stmt) throws SQLException
 	{
 		ResultSet rs = stmt.executeQuery(
@@ -37,8 +52,17 @@ public class QuerySet {
 		return result;
 	}
 	
-	public void archive(Statement stmt, String cutOffTime) throws SQLException
+	public void archive(Connection conn, Date cutOffTime)
 	{
-		stmt.executeQuery("call archive(cutoffTime)");
+		try
+		{
+			PreparedStatement stmt = conn.prepareStatement("call archive(?)");
+			Timestamp ts = new Timestamp(cutOffTime.getTime());
+			stmt.setTimestamp(1, ts);
+			stmt.executeQuery();
+		}catch (Exception e){
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
 	}
+
 }
