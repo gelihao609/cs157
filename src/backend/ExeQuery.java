@@ -1,15 +1,16 @@
-package test;
+package backend;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.sql.DataSource;
 /*
  * run queries from QuerySet
  */
-public class TestQuery {
+public class ExeQuery {
 	
-	public static void main(String[] args) {
+	public String test(String cmd, Object arg) {
         DataSource ds = DataSourceFactory.getMySQLDataSource();     
         Connection conn = null;
         Statement stmt = null;
@@ -17,12 +18,27 @@ public class TestQuery {
         	conn = ds.getConnection(); 
         	stmt = conn.createStatement();
         	QuerySet q = new QuerySet();
-        	//View inventory
-        	System.out.println(q.view_inventory(stmt));
-        	
-        	
-        	
-        	
+    		//View inventory
+        	if(cmd.equals("view_inventory"))
+        	{
+        		return q.view_inventory(stmt);
+        	}
+        	//view transactions
+        	if(cmd.equals("view_transactions"))
+        	{
+        		return q.view_transactions(stmt);
+        	}
+        	//call archive
+        	if(cmd.equals("archive"))
+        	{
+            	java.util.Date cutOffDate = (java.util.Date) arg;
+        		q.archive(conn,cutOffDate);
+        	}
+        	//view supplier
+        	if(cmd.equals("view_suppliers"))
+        	{
+        		return q.view_suppliers(stmt);
+        	}
         	
     	} catch (SQLException e) {
     		System.out.println("Connection Failed! Check output console");
@@ -45,5 +61,6 @@ public class TestQuery {
                se.printStackTrace();
             }//end finally try
 	}
+		return "Finished";
 }
 }
