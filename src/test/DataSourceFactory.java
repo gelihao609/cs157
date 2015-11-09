@@ -12,7 +12,7 @@ public static DataSource getMySQLDataSource() {
         FileInputStream fis = null;
         MysqlDataSource mysqlDS = null;
         try {
-            fis = new FileInputStream("db.properties");
+            fis = new FileInputStream("C:\\Users\\Ravi\\Desktop\\SJSU 7th Semester\\CS 157A\\Supermarket Project\\cs157\\src\\test\\db.properties");
             props.load(fis);
             mysqlDS = new MysqlDataSource();
             mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));

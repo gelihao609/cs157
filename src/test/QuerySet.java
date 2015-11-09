@@ -20,5 +20,16 @@ public class QuerySet {
         }
 		return result;
 	}
+        
+        public String login(Statement stmt,int id, String pw) throws SQLException 
+        {
+            ResultSet rs = stmt.executeQuery(
+            "SELECT employee_ID FROM employee WHERE employee_ID="+id+" and password ='"+pw+"'"+";");
+		
+            if(!rs.next()){
+                return "Invalid login information";
+            }
+            else return "You have succesfully logged in";
+        }
 	
 }

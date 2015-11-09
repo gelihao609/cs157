@@ -17,8 +17,10 @@ public class TestQuery {
         	conn = ds.getConnection(); 
         	stmt = conn.createStatement();
         	QuerySet q = new QuerySet();
+                QuerySet q2 = new QuerySet();
         	//View inventory
         	System.out.println(q.view_inventory(stmt));
+                System.out.println(q2.login(stmt, 1001,"123john4"));
         	
         	
         	
