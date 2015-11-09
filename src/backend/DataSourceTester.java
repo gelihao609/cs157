@@ -1,4 +1,4 @@
-package test;
+package backend;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;

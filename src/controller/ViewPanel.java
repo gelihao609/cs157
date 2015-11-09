@@ -7,7 +7,7 @@ import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-import test.TestQuery;
+import backend.ExeQuery;
 
 import javax.swing.JScrollBar;
 import javax.swing.JTextArea;
@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 
-public class Panel {
+public class ViewPanel {
 
 	private JFrame frame;
 
@@ -26,7 +26,7 @@ public class Panel {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Panel window = new Panel();
+					ViewPanel window = new ViewPanel();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -38,7 +38,7 @@ public class Panel {
 	/**
 	 * Create the application.
 	 */
-	public Panel() {
+	public ViewPanel() {
 		initialize();
 	}
 
@@ -47,15 +47,15 @@ public class Panel {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 601, 353);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		JButton btnViewInventory = new JButton("view Inventory");
-		btnViewInventory.setBounds(45, 13, 115, 25);
+		btnViewInventory.setBounds(456, 13, 115, 25);
 		frame.getContentPane().add(btnViewInventory);
-		JButton btnClearContent = new JButton("Clear content");		
+		JButton btnClearContent = new JButton("Clear");		
 		JScrollPane testAreaScrollContainer = new JScrollPane();
-		testAreaScrollContainer.setBounds(55, 51, 236, 161);
+		testAreaScrollContainer.setBounds(12, 13, 426, 282);
 		frame.getContentPane().add(testAreaScrollContainer);
 		
 		JTextArea textArea = new JTextArea();
@@ -65,15 +65,26 @@ public class Panel {
 				textArea.setText("");
 			}
 		});
-		btnClearContent.setBounds(167, 13, 124, 25);
+		btnClearContent.setBounds(489, 270, 82, 25);
 		frame.getContentPane().add(btnClearContent);
 
 		btnViewInventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TestQuery test = new TestQuery();
+				ExeQuery test = new ExeQuery();
 				textArea.setText(test.test("view_inventory"));
 			}
 		});
+		
+		
+		JButton btnViewTransactions = new JButton("view Trans.");
+		btnViewTransactions.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			ExeQuery test = new ExeQuery();
+			textArea.setText(test.test("view_transactions"));
+			}
+		});
+		btnViewTransactions.setBounds(456, 51, 115, 25);
+		frame.getContentPane().add(btnViewTransactions);
 
 	}
 }

@@ -1,4 +1,4 @@
-package test;
+package backend;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -7,7 +7,7 @@ import javax.sql.DataSource;
 /*
  * run queries from QuerySet
  */
-public class TestQuery {
+public class ExeQuery {
 	
 	public String test(String cmd) {
         DataSource ds = DataSourceFactory.getMySQLDataSource();     
@@ -21,7 +21,18 @@ public class TestQuery {
         	if(cmd.equals("view_inventory"))
         	{
         		return q.view_inventory(stmt);
-        	}        	        	
+        	}
+        	//view transactions
+        	if(cmd.equals("view_transactions"))
+        	{
+        		return q.view_transactions(stmt);
+        	}
+        	//call archive
+        	if(cmd.equals("archive"))
+        	{
+            	q.archive(stmt,"2015-11-08");
+        	}
+        	
     	} catch (SQLException e) {
     		System.out.println("Connection Failed! Check output console");
     		e.printStackTrace();
