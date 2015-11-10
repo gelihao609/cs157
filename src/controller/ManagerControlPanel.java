@@ -3,6 +3,7 @@ package controller;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 
 public class ManagerControlPanel {
@@ -38,9 +39,35 @@ public class ManagerControlPanel {
 		JButton btnView = new JButton("View...");
 		btnView.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							new ViewPanel();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 			}
 		});
 		btnView.setBounds(172, 13, 117, 25);
 		managerFrame.getContentPane().add(btnView);
+		
+		JButton btnArchive = new JButton("Archive");
+		btnArchive.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							 new ArchivePanel();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		});
+		btnArchive.setBounds(12, 44, 138, 25);
+		managerFrame.getContentPane().add(btnArchive);
 	}
 }

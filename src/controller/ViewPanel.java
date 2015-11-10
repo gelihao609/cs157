@@ -14,23 +14,6 @@ import javax.swing.JScrollPane;
 public class ViewPanel {
 
 	private JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ViewPanel window = new ViewPanel();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the application.
 	 */
@@ -48,6 +31,7 @@ public class ViewPanel {
 		frame.getContentPane().setLayout(null);
 		JButton btnViewInventory = new JButton("view Inventory");
 		btnViewInventory.setBounds(456, 13, 115, 25);
+		frame.setVisible(true);
 		frame.getContentPane().add(btnViewInventory);
 		JButton btnClearContent = new JButton("Clear");		
 		JScrollPane testAreaScrollContainer = new JScrollPane();

@@ -13,30 +13,14 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 
-public class Archive {
+public class ArchivePanel {
 
 	private JFrame frame;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Archive window = new Archive();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
-	public Archive() {
+	public ArchivePanel() {
 		initialize();
 	}
 
@@ -44,11 +28,11 @@ public class Archive {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+		frame = new JFrame("Archive");
 		frame.setBounds(100, 100, 290, 155);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+		frame.setVisible(true);
 		JDateChooser dateChooser = new JDateChooser();
 		dateChooser.setBounds(159, 13, 100, 22);
 		frame.getContentPane().add(dateChooser);
