@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JOptionPane;
@@ -63,6 +64,43 @@ public class QuerySet {
 		}catch (Exception e){
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
+	}
+	
+	public ArrayList<Object> authenticate(Statement stmt, int id, String password)
+	{
+		//result set, 1st store type, 2nd store id
+		ArrayList<Object> resultToPass = new ArrayList<Object>(2);
+		try
+		{
+			String q = "SELECT level,employee_ID FROM employee WHERE employee_ID="+Integer.toString(id)+" and password = \""+password+"\"";
+			ResultSet rs = stmt.executeQuery(q);
+					if(!rs.next()){
+						resultToPass.add("fail");
+		                return resultToPass;
+		            }
+		            else if(rs.getString("level").equals("cashier"))
+		            	{	
+							resultToPass.add("cashier");
+							resultToPass.add(rs.getInt("employee_ID"));
+		            		return resultToPass;
+		            	}
+		            else if(rs.getString("level").equals("manager"))
+		            	{
+							resultToPass.add("manager");
+							resultToPass.add(rs.getInt("employee_ID"));
+							return resultToPass; 
+		            	}
+		            else 
+		            	{
+							resultToPass.add("IT");
+							resultToPass.add(rs.getInt("employee_ID"));
+							return resultToPass; 
+		            	}
+		}catch (Exception e){
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		resultToPass.add("error");
+		return resultToPass;
 	}
 
 }
