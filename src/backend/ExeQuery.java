@@ -52,6 +52,15 @@ public class ExeQuery {
         		String password = (String) container.get(1);
         		return q.authenticate(stmt,id,password);
         	}
+        	if(cmd.equals("purchase"))
+        	{
+        		@SuppressWarnings("unchecked")
+				ArrayList<String> container = (ArrayList<String>) arg;
+        		int operatorid = Integer.parseInt(container.get(0));
+        		int itemid = Integer.parseInt(container.get(1));
+        		int quantity = Integer.parseInt(container.get(2));
+        		return q.purchase(conn,operatorid,itemid,quantity);
+        	}
         	
     	} catch (SQLException e) {
     		System.out.println("Connection Failed! Check output console");

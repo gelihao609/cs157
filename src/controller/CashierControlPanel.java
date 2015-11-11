@@ -32,6 +32,15 @@ public class CashierControlPanel {
 		JButton btnPurchasereturn = new JButton("Purchase/Return");
 		btnPurchasereturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							new PurchaseReturnPanel(userid);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 			}
 		});
 		btnPurchasereturn.setBounds(12, 13, 138, 25);
