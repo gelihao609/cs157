@@ -4,16 +4,20 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
 import javax.sql.DataSource;
 /*
  * run queries from QuerySet
  */
 public class ExeQuery {
 	
-	public String test(String cmd, Object arg) {
-        DataSource ds = DataSourceFactory.getMySQLDataSource();     
-        Connection conn = null;
-        Statement stmt = null;
+	DataSource ds = DataSourceFactory.getMySQLDataSource();     
+    Connection conn = null;
+    Statement stmt = null;
+     
+	public Object test(String cmd, Object arg) {
+        
         try {
         	conn = ds.getConnection(); 
         	stmt = conn.createStatement();
@@ -39,6 +43,24 @@ public class ExeQuery {
         	{
         		return q.view_suppliers(stmt);
         	}
+        	//authenticate
+        	if(cmd.equals("login"))
+        	{
+        		@SuppressWarnings("unchecked")
+				ArrayList<Object> container = (ArrayList<Object>) arg;
+        		int id = (int) container.get(0);
+        		String password = (String) container.get(1);
+        		return q.authenticate(stmt,id,password);
+        	}
+        	if(cmd.equals("purchase"))
+        	{
+        		@SuppressWarnings("unchecked")
+				ArrayList<String> container = (ArrayList<String>) arg;
+        		int operatorid = Integer.parseInt(container.get(0));
+        		int itemid = Integer.parseInt(container.get(1));
+        		int quantity = Integer.parseInt(container.get(2));
+        		return q.purchase(conn,operatorid,itemid,quantity);
+        	}
         	
     	} catch (SQLException e) {
     		System.out.println("Connection Failed! Check output console");
@@ -63,4 +85,5 @@ public class ExeQuery {
 	}
 		return "Finished";
 }
+
 }
