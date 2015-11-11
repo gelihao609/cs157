@@ -1,9 +1,7 @@
 package backend;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 
 import javax.sql.DataSource;
@@ -26,7 +24,8 @@ public class DataSourceTester {
 	    		//CallableStatement  stmt2 = connection.prepareCall("{call archive(\"2015-11-07\")}");
 	    		//CallableStatement  stmt3 = connection.prepareCall("{call test(?)}");
 	    		//stmt3.setInt(1,10);
-	    		Timestamp ts = new Timestamp(115,10,7,0,0,0,0);//2015-11-7
+	    		@SuppressWarnings("deprecation")
+				Timestamp ts = new Timestamp(115,10,7,0,0,0,0);//2015-11-7
 				stmt.setTimestamp(1, ts);
 				//Statement stmt = connection.createStatement();
 				//ResultSet rs = stmt.executeQuery("select level from employee");

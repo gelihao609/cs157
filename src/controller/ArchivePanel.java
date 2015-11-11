@@ -1,12 +1,7 @@
 package controller;
-
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import com.toedter.calendar.JDateChooser;
-
 import backend.ExeQuery;
-
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;

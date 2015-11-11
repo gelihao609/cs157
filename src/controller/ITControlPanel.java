@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.EventQueue;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;

@@ -106,13 +106,6 @@ public class QuerySet {
 	public ArrayList<String> purchase(Connection conn, int operatorid,int itemid, int quantity)
 	{
 		ArrayList<String> resultContainer = new ArrayList<String>(3);
-		Statement stmt;
-		try {
-			stmt = conn.createStatement();
-		} catch (SQLException e) {
-			System.out.println("Error in purchase");
-			e.printStackTrace();
-		}
 		int inventory = get_item_inventory(conn,itemid);
 		if(inventory==-1)//item not inStock
 		{
