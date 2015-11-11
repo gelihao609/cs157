@@ -103,7 +103,7 @@ public class QuerySet {
 		return resultToPass;
 	}
 
-	public ArrayList<String> purchase(Connection conn, int operatorid,int itemid, int quantity)
+	public ArrayList<String> purchaseReturn(Connection conn, int operatorid,int itemid, int quantity, String type)
 	{
 		ArrayList<String> resultContainer = new ArrayList<String>(3);
 		int inventory = get_item_inventory(conn,itemid);
@@ -114,16 +114,17 @@ public class QuerySet {
 		}
 		else//item in stock
 		{
-			int newQuantity = inventory-quantity;
+			int newQuantity = type.equals("purchase")?(inventory-quantity):(inventory+quantity);
 			float price = get_item_price(conn,itemid);
 			String name = get_item_name(conn,itemid);
 			float total;
-			update_Inventory(conn,itemid,inventory-quantity);
+			if(type.equals("purchase")) update_Inventory(conn,itemid,newQuantity);
+			else if(type.equals("return"))update_Inventory(conn,itemid,newQuantity);
 			resultContainer.add("success");
 			resultContainer.add(name);
 			if(newQuantity>=0)
 			{
-				 total = price*quantity;
+				total = price*quantity;
 				resultContainer.add(Integer.toString(quantity));
 			}
 			else
@@ -131,7 +132,8 @@ public class QuerySet {
 				 total = price*inventory;
 				 resultContainer.add("is insufficient in stock. New purchase quantity: "+Integer.toString(inventory));
 			}
-			write_transaction(conn,operatorid,itemid,total,"purchase");
+			if(type.equals("purchase")) write_transaction(conn,operatorid,itemid,total,"purchase");
+			else if(type.equals("return")) write_transaction(conn,operatorid,itemid,total*(-1),"return");
 			return resultContainer;
 		}
 	}

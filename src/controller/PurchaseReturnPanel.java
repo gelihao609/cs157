@@ -108,6 +108,29 @@ public class PurchaseReturnPanel {
 		CashierFrame.getContentPane().add(btnPurchase);
 		
 		JButton btnReturn = new JButton("Return");
+		btnReturn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//item: 1.userId 2.itemId 3. itemQuantity
+				ArrayList<String> dataContainer = new ArrayList<String>(3);
+				dataContainer.add(Integer.toString(userid));
+				dataContainer.add(itemTextField.getText());
+				dataContainer.add(quantityTextField.getText());
+				ExeQuery test = new ExeQuery();
+				@SuppressWarnings("unchecked")
+				//1. responseCmd 2.item name 3. quantity in stock
+				ArrayList<String> result = (ArrayList<String>) test.test("return", dataContainer);
+				String response = result.get(0);
+				if(response.equals("itemnotfound"))
+				{
+					JOptionPane.showMessageDialog(CashierFrame, "It's not bought from ours.");
+				}
+				else if(response.equals("success"))
+				{
+					JOptionPane.showMessageDialog(CashierFrame, "Return "+result.get(1)+" Quantity: "+result.get(2)+" succeed.");
+				}
+
+			}
+		});
 		btnReturn.setBounds(138, 78, 85, 25);
 		CashierFrame.getContentPane().add(btnReturn);
 	}

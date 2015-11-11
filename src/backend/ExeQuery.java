@@ -51,14 +51,15 @@ public class ExeQuery {
         		String password = (String) container.get(1);
         		return q.authenticate(stmt,id,password);
         	}
-        	if(cmd.equals("purchase"))
+        	if(cmd.equals("purchase")||cmd.equals("return"))
         	{
         		@SuppressWarnings("unchecked")
 				ArrayList<String> container = (ArrayList<String>) arg;
         		int operatorid = Integer.parseInt(container.get(0));
         		int itemid = Integer.parseInt(container.get(1));
         		int quantity = Integer.parseInt(container.get(2));
-        		return q.purchase(conn,operatorid,itemid,quantity);
+        		return cmd.equals("purchase")?q.purchaseReturn(conn,operatorid,itemid,quantity,"purchase")
+        				:q.purchaseReturn(conn,operatorid,itemid,quantity,"return");
         	}
         	
     	} catch (SQLException e) {
