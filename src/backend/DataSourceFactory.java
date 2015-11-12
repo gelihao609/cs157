@@ -7,12 +7,12 @@ import javax.sql.DataSource;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 public class DataSourceFactory {
 public static DataSource getMySQLDataSource() {
-        
+        //YOOOOOOOOOOOOOKKKKKKKKKKOOOOOOOOOOOOOO
     	Properties props = new Properties();
         FileInputStream fis = null;
         MysqlDataSource mysqlDS = null;
         try {
-            fis = new FileInputStream("db.properties");
+            fis = new FileInputStream("C:\\Users\\Ravi\\Desktop\\cs157\\db.properties");
             props.load(fis);
             mysqlDS = new MysqlDataSource();
             mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
