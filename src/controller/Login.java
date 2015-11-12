@@ -85,6 +85,7 @@ public class Login {
 				container.add(password);
 				@SuppressWarnings("unchecked")
 				List<Object> resultContainer =(List<Object>)test.test("login", container);
+				//resultContainer 1.level 2.id
 				String level = (String) resultContainer.get(0);
 				//error message
 				if(level.equals("fail"))
@@ -112,7 +113,7 @@ public class Login {
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							try {
-								new ITControlPanel();
+								new ITControlPanel((int)resultContainer.get(1));
 								frame.setVisible(false);
 							} catch (Exception e) {
 								e.printStackTrace();

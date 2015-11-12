@@ -224,4 +224,222 @@ public class QuerySet {
 			e.printStackTrace();
 		}
 	}
+	
+	public String check_cashier_trans_count(Statement stmt) {
+		String q = "SELECT employee_ID, first_name, last_name, count(*) as NumOfTransaction "
+				+ "FROM transactions join employee on employee_ID=operator_id "
+				+ "GROUP BY operator_id HAVING operator_id in "
+				+ "(SELECT employee_ID FROM employee WHERE level=\"cashier\")";
+		String result ="ID\tName\tTotalNums\n";
+		try {
+			ResultSet rs = stmt.executeQuery(q);
+			while(rs.next()){
+				int id = rs.getInt("employee_ID");
+				String name = rs.getString("last_name")+","+rs.getString("first_name");
+				int count = rs.getInt("NumOfTransaction"); 
+				result+=id+"\t"+name+"\t"+count+"\n";
+	        }			
+		} catch (SQLException e) {
+			System.out.println("Error in check_cashier_trans_count");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	public String check_item_has_multi_supplier(Statement stmt) {
+		String q ="SELECT item_id,item_name "
+				+ "FROM item "
+				+ "WHERE item_id in "
+				+ "(SELECT iditem "
+				+ "FROM supply as s1 "
+				+ "WHERE exists"
+				+ "(SELECT * "
+				+ "FROM supply "
+				+ "WHERE s1.iditem=iditem and s1.idsupplier!=idsupplier))";
+		String result ="ID\tName\n";
+		try {
+			ResultSet rs = stmt.executeQuery(q);
+			while(rs.next()){
+				int id = rs.getInt("item_id");
+				String name = rs.getString("item_name");
+				result+=id+"\t"+name+"\n";
+	        }			
+		} catch (SQLException e) {
+			System.out.println("Error in check_item_has_multi_supplier");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	public String check_item_not_sold(Statement stmt) {
+		String q="SELECT item.item_id,item.item_name "
+				+ "FROM item  LEFT JOIN transactions on item.item_id=transactions.item_id "
+				+ "WHERE transactions.idtrans is NULL";
+		String result ="ID\tName\n";
+		try {
+			ResultSet rs = stmt.executeQuery(q);
+			while(rs.next()){
+				int id = rs.getInt("item.item_id");
+				String name = rs.getString("item.item_name");
+				result+=id+"\t"+name+"\n";
+			}
+		} catch (SQLException e) {
+			System.out.println("Error in check_item_not_sold");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	public String find_supplier(Statement stmt, String itmid) {
+		String q="SELECT supplier_name,phone_num,supplier_id "
+				+ "FROM supplier "
+				+ "WHERE supplier_id in "
+				+ "(SELECT supply.idsupplier "
+				+ "FROM supply join item on iditem=item_id "
+				+ "where iditem="+itmid+")";
+		String result ="ID\tName\tContact\n";
+		try {
+			ResultSet rs = stmt.executeQuery(q);
+			while(rs.next()){
+				int id = rs.getInt("supplier_id");
+				String name = rs.getString("supplier_name");
+				String phone = rs.getString("phone_num");
+				result+=id+"\t"+name+"\t"+phone+"\n";
+			}
+			if(result.equals("ID\tName\tContact\n")) result="Nofound";
+		} catch (SQLException e) {
+			System.out.println("Error in check_item_has_multi_supplier");
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public String find_item_by_supplier(Statement stmt, String supplierid) {
+		if(supplierid.length()!=0)
+		{
+		String q="SELECT item_id,item_name "
+				+ "FROM item "
+				+ "WHERE item_id in "
+				+ "(SELECT iditem "
+				+ "FROM supply "
+				+ "WHERE idsupplier="+supplierid+")";
+		String result ="ID\tName\n";
+		try {
+			ResultSet rs = stmt.executeQuery(q);
+			while(rs.next()){
+				int id = rs.getInt("item_id");
+				String name = rs.getString("item_name");
+				result+=id+"\t"+name+"\n";
+			}
+			if(result.equals("ID\tName\n")) result="Nofound";
+		} catch (SQLException e) {
+			System.out.println("Error in find_item_by_supplier");
+			e.printStackTrace();
+		}
+		return result;
+		}
+		else
+			return "NoPointer";
+	}
+	public String find_item_below_quantity(Statement stmt, String quantity) {
+		if(quantity.length()!=0)
+		{
+		String q="SELECT item.item_id,item.item_name,inventory.quantity "
+				+ "FROM item join inventory on item.item_id=inventory.iditem "
+				+ "WHERE inventory.quantity<"+quantity;
+		String result ="ID\tName\tQuantity\n";
+		try {
+			ResultSet rs = stmt.executeQuery(q);
+			while(rs.next()){
+				int id = rs.getInt("item.item_id");
+				String name = rs.getString("item.item_name");
+				int quan = rs.getInt("inventory.quantity");
+				result+=id+"\t"+name+"\t"+quan+"\n";
+			}
+			if(result.equals("ID\tName\tQuantity\n")) result="Nofound";
+		} catch (SQLException e) {
+			System.out.println("Error in find_item_below_quantity");
+			e.printStackTrace();
+		}
+		return result;
+		}
+		else return "NoPointer";
+	}
+	public String getEarning(Statement stmt, Date start, Date end) {
+		if(start!=null && end!=null)
+		{
+		Timestamp st = new Timestamp(start.getTime());
+		Timestamp ed = new Timestamp(end.getTime());
+		String q="SELECT SUM(trans_total) as total "
+				+ "FROM transactions "
+				+ "WHERE updatedAt >= \""+st+"\""+"and updatedAt<=\""+ed+"\"";
+		String result="";
+		try {
+			ResultSet rs = stmt.executeQuery(q);
+			while(rs.next()){
+				float id = rs.getFloat("total");
+				result+=id;
+			}
+			if(result.equals("")) result="Transactions not found";
+		} catch (SQLException e) {
+			System.out.println("Error in find_item_below_quantity");
+			e.printStackTrace();
+		}
+		return result;
+	}
+		else return "NoPointer";
+	}
+	public String addItem(Statement stmt, String name, String price) {
+		if(name.length()!=0 && price.length()!=0)
+		{
+			String q="Insert into item(item_name,item_price) "
+					+ "values(\""+name+"\","+price+")";
+			String result="";
+			try {
+				int rs = stmt.executeUpdate(q);
+				if(rs==0) result="ViolateRule";
+				else result ="success";
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return result;
+		}
+		else
+		return "NoPointer";
+	}
+	public String modifyItem(Statement stmt, String id, String price) {
+		if(id.length()!=0 && price.length()!=0)
+		{
+			String q="UPDATE item SET item_price ="+price
+					+ " WHERE item_id="+id;
+			String result="";
+			try {
+				int rs = stmt.executeUpdate(q);
+				if(rs==0) result="ViolateRule";
+				else result ="success";
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return result;
+		}
+		else
+		return "NoPointer";
+	}
+	public String viewEmployee(Statement stmt) {
+		String result ="ID\tName\tLevel\n";
+		try {
+			ResultSet rs = stmt.executeQuery(
+					  "SELECT employee_ID, first_name, last_name, level "
+					+ "FROM employee");
+			while(rs.next()){
+				int id = rs.getInt("employee_ID");
+				String name = rs.getString("last_name")+","+rs.getString("first_name");
+				String level= rs.getString("level");
+				result+=id+"\t"+name+"\t"+level+"\n";
+     }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 }

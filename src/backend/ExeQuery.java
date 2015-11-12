@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.sql.DataSource;
 /*
@@ -61,7 +62,61 @@ public class ExeQuery {
         		return cmd.equals("purchase")?q.purchaseReturn(conn,operatorid,itemid,quantity,"purchase")
         				:q.purchaseReturn(conn,operatorid,itemid,quantity,"return");
         	}
-        	
+        	if(cmd.equals("check_cashier_trans_count"))
+        	{
+        		return q.check_cashier_trans_count(stmt);
+        	}
+        	if(cmd.equals("check_item_has_multi_supplier"))
+        	{
+        		return q.check_item_has_multi_supplier(stmt);
+        	}
+        	if(cmd.equals("find_supplier"))
+        	{
+        		String itmid = (String) arg;
+        		return q.find_supplier(stmt,itmid);
+        	}
+        	if(cmd.equals("check_item_not_sold"))
+        	{
+        		return q.check_item_not_sold(stmt);
+        	}
+        	if(cmd.equals("find_item_by_supplier"))
+        	{
+        		String supplierid = (String) arg;
+        		return q.find_item_by_supplier(stmt,supplierid);
+        	}
+        	if(cmd.equals("find_item_below_quantity"))
+        	{
+        		String quantity = (String) arg;
+        		return q.find_item_below_quantity(stmt,quantity);
+        	}
+        	if(cmd.equals("getEarning"))
+        	{
+				@SuppressWarnings("unchecked")
+				ArrayList<Date> container = (ArrayList<Date>) arg;
+				Date start = container.get(0);
+				Date end = container.get(1);
+        		return q.getEarning(stmt,start,end);
+        	}
+        	if(cmd.equals("addItem"))
+        	{
+        		@SuppressWarnings("unchecked")
+				ArrayList<String> container = (ArrayList<String>) arg;
+        		String name = container.get(0);
+        		String price = container.get(1);
+        		return q.addItem(stmt,name,price);
+        	}
+        	if(cmd.equals("modifyItem"))
+        	{
+        		@SuppressWarnings("unchecked")
+				ArrayList<String> container = (ArrayList<String>) arg;
+        		String id = container.get(0);
+        		String price = container.get(1);
+        		return q.modifyItem(stmt,id,price);
+        	}
+        	if(cmd.equals("viewEmployee"))
+        	{
+        		return q.viewEmployee(stmt);
+        	}
     	} catch (SQLException e) {
     		System.out.println("Connection Failed! Check output console");
     		e.printStackTrace();
