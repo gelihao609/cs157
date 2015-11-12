@@ -11,7 +11,7 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 
 public class CashierControlPanel {
-
+//YYYYYOOOOOOOOOOOOO
 	private JFrame cashierFrame;
 	private int userid;
 
