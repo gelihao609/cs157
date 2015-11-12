@@ -118,6 +118,11 @@ public class ManagerControlPanel {
 		managerFrame.getContentPane().add(btnCheckfind);
 		
 		JButton btnModify = new JButton("Modify...");
+		btnModify.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ModifyPanel();
+			}
+		});
 		btnModify.setBounds(12, 214, 138, 25);
 		managerFrame.getContentPane().add(btnModify);
 	}
