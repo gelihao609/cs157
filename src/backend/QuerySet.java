@@ -442,4 +442,23 @@ public class QuerySet {
 		}
 		return result;
 	}
+	public String signUp(Statement stmt, String firstname, String lastname, String password, String level) {
+		if(firstname.length()!=0 && lastname.length()!=0 && password.length()!=0)
+		{
+			String q="insert into employee(first_name,last_name,password,level) "
+					+ "values (\""+firstname+"\",\""+lastname+"\",\""+password+"\",\""+level+"\")";
+			String result="";
+			try {
+				int rs = stmt.executeUpdate(q);
+				if(rs==0) result="ViolateRule";
+				else result ="success";
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return result;
+		}
+		else
+		return "NoPointer";
+	}
 }

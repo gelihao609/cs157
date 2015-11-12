@@ -19,6 +19,7 @@ import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class ITControlPanel {
@@ -115,14 +116,14 @@ public class ITControlPanel {
 		rdbtnCashier.setBounds(262, 98, 127, 25);
 		frame.getContentPane().add(rdbtnCashier);
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Manager");
-		rdbtnNewRadioButton.setBounds(262, 123, 127, 25);
-		frame.getContentPane().add(rdbtnNewRadioButton);
+		JRadioButton rdbtnManager = new JRadioButton("Manager");
+		rdbtnManager.setBounds(262, 123, 127, 25);
+		frame.getContentPane().add(rdbtnManager);
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(rdbtnIt);
 		buttonGroup.add(rdbtnCashier);
-		buttonGroup.add(rdbtnNewRadioButton);
+		buttonGroup.add(rdbtnManager);
 		
 		JButton btnSignUp = new JButton("Sign Up");
 		btnSignUp.setBounds(34, 318, 97, 25);
@@ -138,7 +139,7 @@ public class ITControlPanel {
 		lblNewLabel.setBounds(136, 13, 97, 16);
 		frame.getContentPane().add(lblNewLabel);
 		
-		JLabel lblId = new JLabel("ID:");
+		JLabel lblId = new JLabel("ID:"+userid);
 		lblId.setBounds(262, 14, 56, 16);
 		frame.getContentPane().add(lblId);
 		
@@ -165,16 +166,34 @@ public class ITControlPanel {
 		});
 		btnSignUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String level = buttonGroup.getSelection().toString();
+				String level="";
+				if(rdbtnIt.isSelected()) level="IT";
+				else if(rdbtnCashier.isSelected())level="Cashier";
+				else if(rdbtnManager.isSelected())level="Manager";
 				String firstname = firstnameTextField.getText();
 				String lastname = lastnameTextField.getText();
 				String pass = passwordTextField.getText();
 				String repass = rePasswordTextField.getText();
 				if(!pass.equals(repass)) 					
 					JOptionPane.showMessageDialog(frame, "Password doesn't match. Try again.");
+				else if(level.equals(""))
+				{
+					JOptionPane.showMessageDialog(frame, "Please select a level.");
+				}
 				else
 				{
-					
+					ExeQuery test = new ExeQuery();
+					//1.firstName,2.lastName,3.password,4.level
+					ArrayList<String> requestContainer = new ArrayList<String>(4);
+					requestContainer.add(firstname);
+					requestContainer.add(lastname);
+					requestContainer.add(pass);
+					requestContainer.add(level);
+					String result =(String) test.test("signUp",requestContainer);
+					if(result.equals("success")) employeeTextArea.setText("Employee is added.");
+					else if((result.equals("NoPointer")))employeeTextArea.setText("Please enter valid data.");
+					else if((result.equals("ViolateRule")))employeeTextArea.setText("Insertion fails.");
+					else employeeTextArea.setText("Failed");
 				}
 			}
 		});

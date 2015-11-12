@@ -117,6 +117,16 @@ public class ExeQuery {
         	{
         		return q.viewEmployee(stmt);
         	}
+        	if(cmd.equals("signUp"))
+        	{
+        		@SuppressWarnings("unchecked")
+				ArrayList<String> container = (ArrayList<String>) arg;
+        		String firstname = container.get(0);
+        		String lastname = container.get(1);
+        		String password = container.get(2);
+        		String level = container.get(3);
+        		return q.signUp(stmt,firstname,lastname,password,level);
+        	}
     	} catch (SQLException e) {
     		System.out.println("Connection Failed! Check output console");
     		e.printStackTrace();
