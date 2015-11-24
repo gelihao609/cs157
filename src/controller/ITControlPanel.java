@@ -21,6 +21,7 @@ import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
 //H
 public class ITControlPanel {
 
@@ -133,6 +134,10 @@ public class ITControlPanel {
 		btnClear.setBounds(241, 318, 77, 25);
 		frame.getContentPane().add(btnClear);
 		
+                JButton deleteUser = new JButton("Delete a User");
+                deleteUser.setBounds(120, 350, 125, 25);
+                frame.getContentPane().add(deleteUser);
+
 		JLabel lblNewLabel = new JLabel("IT Control");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
@@ -197,5 +202,27 @@ public class ITControlPanel {
 				}
 			}
 		});
+                deleteUser.addActionListener(new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        ExeQuery test = new ExeQuery();
+			String employees =(String)test.test("viewEmployee", null);
+                        String[] empList=employees.split("\\n");
+                        
+                JFrame deleteUsersFrame = new JFrame();
+                deleteUsersFrame.setBounds(100, 100, 377, 388);
+		deleteUsersFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		deleteUsersFrame.getContentPane().setLayout(null);
+		deleteUsersFrame.setVisible(true);
+                        JCheckBox x = new JCheckBox("Delete All Users");
+                        x.setBounds(0, 0, 20, 20);
+                        deleteUsersFrame.getContentPane().add(x);
+                        for(int i=0;i<empList.length;i++){
+                            System.out.println(empList[i]);
+                        }
+                    
+                    }
+                });
 	}
 }

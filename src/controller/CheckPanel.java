@@ -1,36 +1,41 @@
 package controller;
 
-import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
-import com.toedter.calendar.JDateChooser;
-
 import java.util.ArrayList;
 import java.util.Date;
-
 import backend.ExeQuery;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class CheckPanel {
 
-	private JFrame frame;
-	private JTextField itmIDtextField;
-	private JTextField quantiTextField;
-	private JTextField earningTextField;
-	private JTextField supplierIdtextField;
+	private TextField itmIDtextField;
+	private TextField quantiTextField;
+	private TextField earningTextField;
+	private TextField supplierIdtextField;
+ private DatePicker fromDate = new DatePicker();
+                     private   DatePicker toDate = new DatePicker();
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
+		/*EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					CheckPanel window = new CheckPanel();
@@ -40,6 +45,9 @@ public class CheckPanel {
 				}
 			}
 		});
+            */
+            
+            
 	}
 
 	/**
@@ -53,186 +61,166 @@ public class CheckPanel {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame("Check & Find Panel");
-		frame.setBounds(100, 100, 542, 414);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setVisible(true);
-		JButton chkCshConbutton = new JButton("Go");
-		chkCshConbutton.setBounds(12, 37, 60, 25);
-		frame.getContentPane().add(chkCshConbutton);
+           
+            Platform.runLater(new Runnable() {
+
+                @Override
+                public void run() {
+            Stage checkAndFindStage = new Stage();
+            GridPane gPane = new GridPane();
+           
+           
+           
+		Button chkCshConbutton = new Button("Go");
 		
-		JLabel lblCheckCashiersTransaction = new JLabel("Check cashier's transaction counts:");
-		lblCheckCashiersTransaction.setBounds(12, 13, 210, 16);
-		frame.getContentPane().add(lblCheckCashiersTransaction);
+		Label lblCheckCashiersTransaction = new Label("Check cashier's transaction counts:");
 		
-		JLabel lblCheckItemsHave = new JLabel("Check items have multiple suppliers:");
-		lblCheckItemsHave.setBounds(12, 75, 233, 16);
-		frame.getContentPane().add(lblCheckItemsHave);
+		Label lblCheckItemsHave = new Label("Check items have multiple suppliers:");
 		
-		JButton chkItmMltiSplbutton = new JButton("Go");
-		chkItmMltiSplbutton.setBounds(12, 104, 60, 25);
-		frame.getContentPane().add(chkItmMltiSplbutton);
+		Button chkItmMltiSplbutton = new Button("Go");
 		
-		JScrollPane mainScrollPane = new JScrollPane();
-		mainScrollPane.setBounds(234, 13, 278, 235);
-		frame.getContentPane().add(mainScrollPane);
+		ScrollPane mainScrollPane = new ScrollPane();
 		
-		JTextArea mainTextArea = new JTextArea();
+		TextArea mainTextArea = new TextArea();
 		mainTextArea.setEditable(false);
-		mainScrollPane.setViewportView(mainTextArea);
+		mainScrollPane.setContent(mainTextArea);
 		
-		JLabel lblFindSupplierFor = new JLabel("Find supplier by itemId:");
-		lblFindSupplierFor.setBounds(12, 204, 148, 16);
-		frame.getContentPane().add(lblFindSupplierFor);
+		Label lblFindSupplierFor = new Label("Find supplier by itemId:");
 		
-		itmIDtextField = new JTextField();
-		itmIDtextField.setBounds(12, 223, 75, 22);
-		frame.getContentPane().add(itmIDtextField);
-		itmIDtextField.setColumns(10);
+		itmIDtextField = new TextField();
 		
-		JButton findSupBtn = new JButton("Go");
-		findSupBtn.setBounds(99, 223, 50, 22);
-		frame.getContentPane().add(findSupBtn);
 		
-		JLabel lblFindItemBelow = new JLabel("Find item below quantity of:");
-		lblFindItemBelow.setBounds(12, 313, 167, 16);
-		frame.getContentPane().add(lblFindItemBelow);
+		Button findSupBtn = new Button("Go");		
+		Label lblFindItemBelow = new Label("Find item below quantity of:");
 		
-		quantiTextField = new JTextField();
-		quantiTextField.setBounds(12, 331, 75, 22);
-		frame.getContentPane().add(quantiTextField);
-		quantiTextField.setColumns(10);
+		quantiTextField = new TextField();
 		
-		JButton findLowInvenBtn = new JButton("Go");
-		findLowInvenBtn.setBounds(99, 331, 50, 22);
-		frame.getContentPane().add(findLowInvenBtn);
+		Button findLowInvenBtn = new Button("Go");
 		
-		JLabel lblGetEarning = new JLabel("Start Date:");
-		lblGetEarning.setBounds(218, 300, 81, 16);
-		frame.getContentPane().add(lblGetEarning);
+		Label lblGetEarning = new Label("Start Date:");
 		
-		JDateChooser startDateChooser = new JDateChooser();
-		startDateChooser.setBounds(293, 297, 100, 22);
-		frame.getContentPane().add(startDateChooser);
 		
-		JDateChooser endDateChooser = new JDateChooser();
-		endDateChooser.setBounds(293, 331, 100, 22);
-		frame.getContentPane().add(endDateChooser);
 		
-		JLabel lblEndDate = new JLabel("End Date:");
-		lblEndDate.setBounds(225, 334, 56, 16);
-		frame.getContentPane().add(lblEndDate);
 		
-		earningTextField = new JTextField();
+		
+		Label lblEndDate = new Label("End Date:");
+		
+		earningTextField = new TextField();
 		earningTextField.setEditable(false);
-		earningTextField.setBounds(405, 296, 107, 22);
-		frame.getContentPane().add(earningTextField);
-		earningTextField.setColumns(10);
 		
-		JButton earningBtn = new JButton("Get Earnings");
-		earningBtn.setBounds(405, 328, 107, 25);
-		frame.getContentPane().add(earningBtn);
+		Button earningBtn = new Button("Get Earnings");
 		
-		JButton btnClear = new JButton("Clear");
-		btnClear.setBounds(442, 252, 70, 25);
-		frame.getContentPane().add(btnClear);
+		Button btnClear = new Button("Clear");
 		
-		JLabel lblCheckItemsNot = new JLabel("Check items not been sold yet:");
-		lblCheckItemsNot.setBounds(12, 142, 210, 16);
-		frame.getContentPane().add(lblCheckItemsNot);
+		Label lblCheckItemsNot = new Label("Check items not been sold yet:");
 		
-		JButton notSoldBtn = new JButton("Go");
-		notSoldBtn.setBounds(12, 166, 60, 25);
-		frame.getContentPane().add(notSoldBtn);
+		Button notSoldBtn = new Button("Go");
 		
-		JLabel lblFind = new JLabel("Find item by supplierId:");
-		lblFind.setBounds(12, 258, 148, 16);
-		frame.getContentPane().add(lblFind);
+		Label lblFind = new Label("Find item by supplierId:");
 		
-		supplierIdtextField = new JTextField();
-		supplierIdtextField.setBounds(12, 278, 75, 22);
-		frame.getContentPane().add(supplierIdtextField);
-		supplierIdtextField.setColumns(10);
+		supplierIdtextField = new TextField();
 		
-		JButton suppBtn = new JButton("Go");
-		suppBtn.setBounds(99, 278, 50, 22);
-		frame.getContentPane().add(suppBtn);
+		Button suppBtn = new Button("Go");
 		
-		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mainTextArea.setText("");
-			}
-		});
+		btnClear.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
+
+                @Override
+                public void handle(javafx.event.ActionEvent event) {
+                    mainTextArea.setText("");
+                }
+            });
 		
-		chkCshConbutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		chkCshConbutton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
 				ExeQuery test = new ExeQuery();
 				mainTextArea.setText((String)test.test("check_cashier_trans_count",null));
 			}
 		});
 		
-		chkItmMltiSplbutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		chkItmMltiSplbutton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
 				ExeQuery test = new ExeQuery();
 				mainTextArea.setText((String)test.test("check_item_has_multi_supplier",null));
 			}
 		});
-		findSupBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		findSupBtn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
 				ExeQuery test = new ExeQuery();
 				String itemid=itmIDtextField.getText();
 				String result = (String)test.test("find_supplier",itemid);
 				if(result.equals("Nofound")) 
 				{
-					JOptionPane.showMessageDialog(frame, "No supplier found. Try another item.");
+                                    			
+                                                            Alert alert = new Alert(Alert.AlertType.ERROR);
+alert.setTitle("Failed");
+alert.setHeaderText("Insertion Failed");
+alert.setContentText("No supplier found. Try another item.");
+alert.showAndWait();
 				}
 				else
 				mainTextArea.setText(result);
 			}
 		});
-		notSoldBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		notSoldBtn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
 				ExeQuery test = new ExeQuery();
 				mainTextArea.setText((String)test.test("check_item_not_sold",null));
 			}
 		});
-		suppBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		suppBtn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
 				ExeQuery test = new ExeQuery();
 				String supplierid=supplierIdtextField.getText();
 				String result = (String)test.test("find_item_by_supplier",supplierid);
 				if(result.equals("Nofound")) 
 				{
-					JOptionPane.showMessageDialog(frame, "No item found by this supplier. Try another.");
+                                                            Alert alert = new Alert(Alert.AlertType.ERROR);
+alert.setTitle("Failed");
+alert.setHeaderText("Insertion Failed");
+alert.setContentText("No item found by this supplier. Try another.");
+alert.showAndWait();
 				}
 				else if(result.equals("ViolateRule")) 
 				{
-					JOptionPane.showMessageDialog(frame, "Insertion violate rules. Try another.");
+                                    Alert alert = new Alert(Alert.AlertType.ERROR);
+alert.setTitle("Failed");
+alert.setHeaderText("Insertion Failed");
+alert.setContentText("Insertion violate rules. Try another.");
+alert.showAndWait();
 				}
 				else
 				mainTextArea.setText(result);
 			}
 		});
-		findLowInvenBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		findLowInvenBtn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
 				ExeQuery test = new ExeQuery();
 				String quantity=quantiTextField.getText();
 				String result = (String)test.test("find_item_below_quantity",quantity);
 				if(result.equals("Nofound")) 
 				{
-					JOptionPane.showMessageDialog(frame, "All items have inventory above "+quantity);
+                                                                        Alert alert = new Alert(Alert.AlertType.ERROR);
+alert.setTitle("Failed");
+alert.setHeaderText("Insertion Failed");
+alert.setContentText("All items have inventory above "+quantity);
+alert.showAndWait();
 				}
 				else
 				mainTextArea.setText(result);			
 				}
 		});
-		earningBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		earningBtn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
 				ExeQuery test = new ExeQuery();
-				Date start =startDateChooser.getDate();
-				Date end =endDateChooser.getDate();
-				//1. start date 2.end date
+                                LocalDate fromld = fromDate.getValue();
+                                Instant fromInstant = fromld.atStartOfDay(ZoneId.systemDefault()).toInstant();
+                                LocalDate told = toDate.getValue();
+                                Instant toInstant = told.atStartOfDay(ZoneId.systemDefault()).toInstant();
+				Date start = Date.from(fromInstant);
+                                				Date end = Date.from(toInstant);
+                                                                System.out.print(start.toString()+" " +end.toString());
+
+                                //1. start date 2.end date
 				ArrayList<Date> requestContainer = new ArrayList<Date>(2);
 				requestContainer.add(start);
 				requestContainer.add(end);
@@ -241,5 +229,16 @@ public class CheckPanel {
 				else earningTextField.setText(result);
 			}
 		});
+         
+            gPane.add(fromDate, 0, 0);
+            gPane.add(toDate,0,1);
+            gPane.add(earningTextField,1,0);
+            gPane.add(earningBtn, 1, 1);
+             Scene candf = new Scene(gPane,500,500);
+            checkAndFindStage.setScene(candf);
+            checkAndFindStage.showAndWait();
+                }
+            });
+		               
 	}
 }

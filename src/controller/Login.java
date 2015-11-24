@@ -1,88 +1,92 @@
-package controller;
-
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
 import backend.ExeQuery;
-
+import controller.CashierControlPanel;
+import controller.ITControlPanel;
+import controller.ManagerControlPanel;
+import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.event.ActionEvent;
+import javafx.application.Application;
+import static javafx.application.Application.launch;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
+import javafx.stage.Stage;
 
-public class Login {
+/**
+ *
+ * @author Ravi
+ */
+public class Login extends Application {
+        TextField employeeID= new TextField();
+        TextField password= new PasswordField();
 
-	private JFrame frame;
-	private JTextField idField;
-	private JTextField passwordField;
+    @Override
+    public void start(Stage primaryStage) {
+       
+        Button btn = new Button();
+        btn.setText("LOGIN");
+      
+                Label userName = new Label("Employee ID:");
+                                   Label pw = new Label("Password");
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Login window = new Login();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+        GridPane root = new GridPane();
+                root.add(userName, 0, 0);
+                root.add(employeeID, 1, 0);
+               root.add(pw, 0, 2);
+                root.add(password, 1, 2);
+                root.add(btn, 1, 3);
+                root.setHgap(10);
+                root.setVgap(10);
+                GridPane.setMargin(userName, new Insets(30, 10, 25, 200));
+                GridPane.setMargin(employeeID, new Insets(30, 10, 25, 20));
+                GridPane.setMargin(pw, new Insets(5, 10, 25, 200));
+                GridPane.setMargin(password, new Insets(5, 10, 25, 20));
+                
 
-	/**
-	 * Create the application.
-	 */
-	public Login() {
-		initialize();
-	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 241, 181);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
-		JLabel lblId = new JLabel("ID:");
-		lblId.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblId.setBounds(12, 13, 56, 16);
-		frame.getContentPane().add(lblId);
-		
-		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setBounds(12, 53, 66, 16);
-		frame.getContentPane().add(lblPassword);
-		
-		idField = new JTextField();
-		idField.setBounds(88, 10, 116, 22);
-		frame.getContentPane().add(idField);
-		idField.setColumns(10);
-		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(90, 50, 116, 22);
-		frame.getContentPane().add(passwordField);
-		passwordField.setColumns(10);
-		
-		JButton btnLogIn = new JButton("Log In");
-		btnLogIn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int id = Integer.parseInt(idField.getText());
-				String password = passwordField.getText();
+        Scene scene = new Scene(root, 300, 250);
+        
+                
+        primaryStage.setTitle("Login into Account");
+        primaryStage.setScene(scene);
+        primaryStage.setMinWidth(1500);
+                primaryStage.setMinHeight(500);
+
+        primaryStage.show();
+        
+        
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                
+                int id = Integer.parseInt(employeeID.getText());
+				String inputtedPW = password.getText();
+                                System.out.println(inputtedPW);
 				ExeQuery test = new ExeQuery();
 				List<Object> container = new ArrayList<Object>(2);
 				container.add(id);
-				container.add(password);
+				container.add(inputtedPW);
 				@SuppressWarnings("unchecked")
 				List<Object> resultContainer =(List<Object>)test.test("login", container);
 				//resultContainer 1.level 2.id
@@ -90,7 +94,12 @@ public class Login {
 				//error message
 				if(level.equals("fail"))
 					{
-					JOptionPane.showMessageDialog(frame, "Login fails. Try again.");
+                                            					Alert alert = new Alert(AlertType.ERROR);
+alert.setTitle("Login Failed");
+alert.setHeaderText("Login Failed");
+alert.setContentText("Incorrect Employee ID or Password Please Try Again.");
+
+alert.showAndWait();
 					}
 				//manager panel
 				else if(level.equals("manager"))
@@ -99,8 +108,6 @@ public class Login {
 						public void run() {
 							try {
 								new ManagerControlPanel((int)resultContainer.get(1));
-								frame.setVisible(false);
-
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -113,8 +120,7 @@ public class Login {
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							try {
-								new ITControlPanel((int)resultContainer.get(1));
-								frame.setVisible(false);
+								
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -127,8 +133,8 @@ public class Login {
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
 							try {
-								new CashierControlPanel((int)resultContainer.get(1));
-								frame.setVisible(false);
+					new CashierControlPanel((int)resultContainer.get(1));
+
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -137,14 +143,24 @@ public class Login {
 				}
 				else if(level.equals("error"))
 				{
-					JOptionPane.showMessageDialog(frame, "couldn't retrieve message from DB.");
+					Alert alert = new Alert(AlertType.ERROR);
+alert.setTitle("Error Dialog");
+alert.setHeaderText("Look, an Error Dialog");
+alert.setContentText("Couldn't retrieve message from DB");
+alert.showAndWait();
 
-				}
+            }
+             
+        };
 				
-			}
-		});
-		btnLogIn.setBounds(67, 98, 97, 25);
-		frame.getContentPane().add(btnLogIn);
-	}
+        });
+                }
 
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
+    
 }
