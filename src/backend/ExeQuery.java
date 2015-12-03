@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import javafx.scene.control.Alert;
 
 import javax.sql.DataSource;
 /*
@@ -12,7 +13,7 @@ import javax.sql.DataSource;
  */
 public class ExeQuery {
 	
-	DataSource ds = DataSourceFactory.getMySQLDataSource();     
+DataSource ds = DataSourceFactory.getMySQLDataSource();     
     Connection conn = null;
     Statement stmt = null;
      
@@ -128,6 +129,11 @@ public class ExeQuery {
         		return q.signUp(stmt,firstname,lastname,password,level);
         	}
     	} catch (SQLException e) {
+Alert alert = new Alert(Alert.AlertType.ERROR);
+alert.setTitle("Error Dialog");
+alert.setHeaderText("Failed to Connect to Database");
+alert.setContentText("Connection Failed! Check output console");
+alert.showAndWait();
     		System.out.println("Connection Failed! Check output console");
     		e.printStackTrace();
     	}catch(Exception e){

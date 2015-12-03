@@ -1,29 +1,49 @@
 package controller;
 
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
+import controller.CashierControlPanel;
+import controller.ITControlPanel;
+import controller.ManagerControlPanel;
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.application.Application;
+import static javafx.application.Application.launch;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
+import javafx.stage.Stage;
 
 public class ManagerControlPanel {
-
-	private JFrame managerFrame;
+        private Stage managerStage;
 	private int userid;
 	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
+		Platform.runLater(new Runnable() {
 			public void run() {
 				try {
 					ManagerControlPanel window = new ManagerControlPanel(1003);
-					window.managerFrame.setVisible(true);
-				} catch (Exception e) {
+                                        
+                                } catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -34,26 +54,67 @@ public class ManagerControlPanel {
 	 */
 	public ManagerControlPanel(int id) {
 		initialize(id);
+             
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(int id) {
-		userid=id;
-		managerFrame = new JFrame("Manager Control Panel");
-		managerFrame.setBounds(100, 100, 180, 309);
-		managerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		managerFrame.getContentPane().setLayout(null);
-		managerFrame.setVisible(true);
+            
+               Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+           
+              managerStage= new Stage();
+              managerStage.setTitle("Manager Control Panel");
+              GridPane mPanel = new GridPane();
+                                  BorderPane managerPanel = new BorderPane();
+                                      managerPanel.setPadding(new Insets(10, 20, 10, 20));
 
-		JButton btnPurchasereturn = new JButton("Purchase&Return");
-		btnPurchasereturn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				EventQueue.invokeLater(new Runnable() {
+		userid=id;
+		Button btnPurchasereturn = new Button("Purchase&Return");
+		btnPurchasereturn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent arg0) {
+				                        Platform.runLater(new Runnable() {
 					public void run() {
 						try {
-							new PurchaseReturnPanel(userid);
+                                                    PurchaseReturnPanel x = new PurchaseReturnPanel(userid); 
+                                                    GridPane purchasePanel = x.getPurchaseReturnPanel();
+                                                    BorderPane.setMargin(purchasePanel, new Insets(200,200,200,200));
+                                                    managerPanel.setCenter(purchasePanel);
+                                                    managerPanel.setTop(null);
+                                                    managerPanel.setRight(null);
+
+
+                                                } catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		});
+                btnPurchasereturn.setMinSize(300, 300);
+                //btnPurchasereturn.setStyle("-fx-background-color: blue");
+		mPanel.add(btnPurchasereturn, 0, 0);
+		Button btnView = new Button("View...");
+		btnView.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				Platform.runLater(new Runnable() {
+					public void run() {
+						try {
+					            ViewPanel x = new ViewPanel(); 
+                                                     managerPanel.setRight(null);
+
+                                                    GridPane viewMenu = x.getMenu();
+                                                    GridPane contents = x.getContents();
+                                                    BorderPane.setMargin(contents, new Insets(0, 0, 0, 300));
+
+                                                    BorderPane.setMargin(viewMenu, new Insets(0, 0, 0, 570));
+                                                    managerPanel.setTop(viewMenu);
+                                                    managerPanel.setCenter(contents);
+                                                    
+                                                    
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -61,16 +122,19 @@ public class ManagerControlPanel {
 				});
 			}
 		});
-		btnPurchasereturn.setBounds(12, 62, 138, 25);
-		managerFrame.getContentPane().add(btnPurchasereturn);
+                btnView.setMinSize(300, 300);
+                mPanel.add(btnView, 0, 4);
 		
-		JButton btnView = new JButton("View...");
-		btnView.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				EventQueue.invokeLater(new Runnable() {
+		Button btnArchive = new Button("Archive");
+		btnArchive.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent arg0) {
+				Platform.runLater(new Runnable() {
 					public void run() {
 						try {
-							new ViewPanel();
+							ArchivePanel x= new ArchivePanel();
+                                                        managerPanel.setRight(null);
+                                                        managerPanel.setTop(null);
+                                                        managerPanel.setCenter(x.getArchivePanel());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -78,52 +142,60 @@ public class ManagerControlPanel {
 				});
 			}
 		});
-		btnView.setBounds(12, 138, 138, 25);
-		managerFrame.getContentPane().add(btnView);
+                btnArchive.setMinSize(300, 300);
+		mPanel.add(btnArchive, 0, 1);
 		
-		JButton btnArchive = new JButton("Archive");
-		btnArchive.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							 new ArchivePanel();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
-			}
+		Label lblManagerControl = new Label("Manager Control");
+		
+		Label lblId = new Label("ID:");
+		
+		
+		Button btnCheckfind = new Button("Check&Find");
+		btnCheckfind.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+                                CheckPanel x = new CheckPanel();
+                                managerPanel.setRight(null);
+                                GridPane menu = x.getMenu();
+                                BorderPane.setMargin(menu, new Insets(0, 0, 0, 400));
+
+                                managerPanel.setTop(menu);
+                                GridPane contents = x.getContents();
+                                BorderPane.setMargin(contents, new Insets(100, 0, 0, 250));
+
+                                managerPanel.setCenter(contents);
+                                /*GridPane checkPanel = new GridPane();
+                                GridPane menu = x.findLowInventory();
+                                GridPane view = x.getContents();
+                                checkPanel.add(menu, 0, 0);
+                                checkPanel.add(view,0,1);
+                                managerPanel.setCenter(checkPanel);
+                                        */
+
+                        }
 		});
-		btnArchive.setBounds(12, 100, 138, 25);
-		managerFrame.getContentPane().add(btnArchive);
-		
-		JLabel lblManagerControl = new JLabel("Manager Control");
-		lblManagerControl.setHorizontalAlignment(SwingConstants.CENTER);
-		lblManagerControl.setFont(new Font("SansSerif", Font.BOLD, 16));
-		lblManagerControl.setBounds(12, 13, 138, 16);
-		managerFrame.getContentPane().add(lblManagerControl);
-		
-		JLabel lblId = new JLabel("ID:");
-		lblId.setBounds(22, 33, 32, 16);
-		managerFrame.getContentPane().add(lblId);
-		
-		JButton btnCheckfind = new JButton("Check&Find");
-		btnCheckfind.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new CheckPanel();
-			}
+                btnCheckfind.setMinSize(300, 300);
+		mPanel.add(btnCheckfind, 0, 2);
+		Button btnModify = new Button("Modify...");
+		btnModify.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+                                ModifyPanel x = new ModifyPanel();
+                                GridPane menu = x.getMenu();
+                                BorderPane.setMargin(menu, new Insets(0, 0, 0, 500));
+
+                                managerPanel.setTop(menu);
+                                GridPane view = x.getView();
+                                managerPanel.setCenter(view);
+                                managerPanel.setRight(x.getResult());
+                        }
 		});
-		btnCheckfind.setBounds(12, 176, 138, 25);
-		managerFrame.getContentPane().add(btnCheckfind);
-		
-		JButton btnModify = new JButton("Modify...");
-		btnModify.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new ModifyPanel();
-			}
-		});
-		btnModify.setBounds(12, 214, 138, 25);
-		managerFrame.getContentPane().add(btnModify);
+                btnModify.setMinSize(300, 300);
+                mPanel.add(btnModify, 0, 3);
+                 managerPanel.setLeft(mPanel);
+                Scene scene = new Scene(managerPanel, 2000,1500);
+                  //managerPanel.setStyle("-fx-background-color: black");
+                 managerStage.setScene(scene);
+                            managerStage.showAndWait();
+                     }
+                });  
 	}
 }

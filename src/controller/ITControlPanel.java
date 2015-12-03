@@ -1,6 +1,4 @@
 package controller;
-
-
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,19 +16,50 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-//H
+import javafx.application.Platform;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import javax.swing.JCheckBox;
+
 public class ITControlPanel {
 
-	private JFrame frame;
-	private JTextField firstnameTextField;
-	private JTextField lastnameTextField;
-	private JTextField passwordTextField;
-	private JTextField rePasswordTextField;
-	private JLabel lblLevel;
+	private TextField firstnameTextField;
+	private TextField lastnameTextField;
+	private TextField passwordTextField;
+	private TextField rePasswordTextField;
+	private Label lblLevel;
 	private int userid;
+        private GridPane itPanelView = new GridPane();
+        private Button addUserMenu = new Button("Add New Employee");
+        private Button viewEmployeesMenu = new Button("View All Employees");
+private Label lblFirstName = new Label("First Name:");
+	private Label lblLastName = new Label("Last Name:");
+	private Label lblPassword = new Label("Password:");
+        private Label lblRetype = new Label("Re-type:");
+        private Stage ITStage = new Stage();
+        private RadioButton rdbtnIt = new RadioButton("IT");
+	private RadioButton rdbtnCashier = new RadioButton("Cashier");
+	private RadioButton rdbtnManager = new RadioButton("Manager");
+        private Button btnSignUp = new Button("Sign Up");
+        private TextArea employeeTextArea = new TextArea();
+        Button btnView = new Button("View All");
+        private BorderPane itBorderPane = new BorderPane();
+
 	
 	/**
 	 * Launch the application.
@@ -40,7 +69,7 @@ public class ITControlPanel {
 			public void run() {
 				try {
 					ITControlPanel window = new ITControlPanel(1002);
-					window.frame.setVisible(true);
+					//window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -58,114 +87,57 @@ public class ITControlPanel {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(int id) {
-		frame = new JFrame("IT Control Panel");
-		frame.setBounds(100, 100, 377, 388);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setVisible(true);
+		          Platform.runLater(new Runnable() {
+
+                              @Override
+                              public void run() {
 		userid=id;
-		JLabel lblFirstName = new JLabel("First Name:");
-		lblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblFirstName.setBounds(12, 53, 77, 16);
-		frame.getContentPane().add(lblFirstName);
 		
-		firstnameTextField = new JTextField();
-		firstnameTextField.setBounds(110, 50, 116, 22);
-		frame.getContentPane().add(firstnameTextField);
-		firstnameTextField.setColumns(10);
+		addUserMenu.setMinSize(100, 100);
+                viewEmployeesMenu.setMinSize(100, 100);
+		firstnameTextField = new TextField();
+                lastnameTextField = new TextField();
+		passwordTextField = new PasswordField();
+		rePasswordTextField = new PasswordField();
+		lblLevel = new Label("Level:");
+                ToggleGroup buttonGroup = new ToggleGroup();
+                rdbtnCashier.setToggleGroup(buttonGroup);
+                rdbtnIt.setToggleGroup(buttonGroup);
+                rdbtnManager.setToggleGroup(buttonGroup);
+
+		//buttonGroup.add(rdbtnIt);
+		//buttonGroup.add(rdbtnCashier);
+		//buttonGroup.add(rdbtnManager);		
 		
-		JLabel lblLastName = new JLabel("Last Name:");
-		lblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblLastName.setBounds(12, 82, 77, 16);
-		frame.getContentPane().add(lblLastName);
+		Button btnClear = new Button("Clear");
 		
-		lastnameTextField = new JTextField();
-		lastnameTextField.setBounds(110, 79, 116, 22);
-		frame.getContentPane().add(lastnameTextField);
-		lastnameTextField.setColumns(10);
+               Button deleteUser = new Button("Delete a User");
+              //  deleteUser.setBounds(120, 350, 125, 25);
+               // frame.getContentPane().add(deleteUser);
+
+		Label lblNewLabel = new Label("IT Control");
 		
-		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblPassword.setBounds(12, 117, 77, 16);
-		frame.getContentPane().add(lblPassword);
 		
-		passwordTextField = new JPasswordField();
-		passwordTextField.setBounds(110, 114, 116, 22);
-		frame.getContentPane().add(passwordTextField);
-		passwordTextField.setColumns(10);
+		Label lblId = new Label("ID:"+userid);
 		
-		JLabel lblRetype = new JLabel("Re-type:");
-		lblRetype.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblRetype.setBounds(34, 145, 56, 16);
-		frame.getContentPane().add(lblRetype);
 		
-		rePasswordTextField = new JPasswordField();
-		rePasswordTextField.setBounds(110, 142, 116, 22);
-		frame.getContentPane().add(rePasswordTextField);
-		rePasswordTextField.setColumns(10);
+		ScrollPane scrollPane = new ScrollPane();
 		
-		lblLevel = new JLabel("Level:");
-		lblLevel.setBounds(262, 53, 56, 16);
-		frame.getContentPane().add(lblLevel);
+		scrollPane.setContent(employeeTextArea);
 		
-		JRadioButton rdbtnIt = new JRadioButton("IT");
-		rdbtnIt.setBounds(262, 73, 62, 25);
-		frame.getContentPane().add(rdbtnIt);
-		
-		JRadioButton rdbtnCashier = new JRadioButton("Cashier");
-		rdbtnCashier.setBounds(262, 98, 127, 25);
-		frame.getContentPane().add(rdbtnCashier);
-		
-		JRadioButton rdbtnManager = new JRadioButton("Manager");
-		rdbtnManager.setBounds(262, 123, 127, 25);
-		frame.getContentPane().add(rdbtnManager);
-		
-		ButtonGroup buttonGroup = new ButtonGroup();
-		buttonGroup.add(rdbtnIt);
-		buttonGroup.add(rdbtnCashier);
-		buttonGroup.add(rdbtnManager);
-		
-		JButton btnSignUp = new JButton("Sign Up");
-		btnSignUp.setBounds(34, 318, 97, 25);
-		frame.getContentPane().add(btnSignUp);
-		
-		JButton btnClear = new JButton("Clear");
-		btnClear.setBounds(241, 318, 77, 25);
-		frame.getContentPane().add(btnClear);
-		
-		JLabel lblNewLabel = new JLabel("IT Control");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
-		lblNewLabel.setBounds(136, 13, 97, 16);
-		frame.getContentPane().add(lblNewLabel);
-		
-		JLabel lblId = new JLabel("ID:"+userid);
-		lblId.setBounds(262, 14, 56, 16);
-		frame.getContentPane().add(lblId);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(24, 174, 312, 131);
-		frame.getContentPane().add(scrollPane);
-		
-		JTextArea employeeTextArea = new JTextArea();
-		scrollPane.setViewportView(employeeTextArea);
-		
-		JButton btnView = new JButton("View All");
-		btnView.setBounds(143, 318, 83, 25);
-		frame.getContentPane().add(btnView);
-		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnClear.setOnAction(new EventHandler<ActionEvent> () {
+			public void handle(ActionEvent e) {
 				employeeTextArea.setText(null);
 			}
 		});
-		btnView.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnView.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
 				ExeQuery test = new ExeQuery();
 				employeeTextArea.setText((String)test.test("viewEmployee", null));
 			}
 		});
-		btnSignUp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
 				String level="";
 				if(rdbtnIt.isSelected()) level="IT";
 				else if(rdbtnCashier.isSelected())level="Cashier";
@@ -174,11 +146,12 @@ public class ITControlPanel {
 				String lastname = lastnameTextField.getText();
 				String pass = passwordTextField.getText();
 				String repass = rePasswordTextField.getText();
-				if(!pass.equals(repass)) 					
-					JOptionPane.showMessageDialog(frame, "Password doesn't match. Try again.");
+				if(!pass.equals(repass)) {					
+					//JOptionPane.showMessageDialog(frame, "Password doesn't match. Try again.");
+                                }
 				else if(level.equals(""))
 				{
-					JOptionPane.showMessageDialog(frame, "Please select a level.");
+					//JOptionPane.showMessageDialog(frame, "Please select a level.");
 				}
 				else
 				{
@@ -197,5 +170,83 @@ public class ITControlPanel {
 				}
 			}
 		});
+                deleteUser.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent ae) {
+                        ExeQuery test = new ExeQuery();
+			String employees =(String)test.test("viewEmployee", null);
+                        String[] empList=employees.split("\\n");
+                        
+                JFrame deleteUsersFrame = new JFrame();
+                deleteUsersFrame.setBounds(100, 100, 377, 388);
+		deleteUsersFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		deleteUsersFrame.getContentPane().setLayout(null);
+		deleteUsersFrame.setVisible(true);
+                        JCheckBox x = new JCheckBox("Delete All Users");
+                        x.setBounds(0, 0, 20, 20);
+                        deleteUsersFrame.getContentPane().add(x);
+                        for(int i=0;i<empList.length;i++){
+                            System.out.println(empList[i]);
+                        }
+                    
+                    }
+                });
+                
+                addUserMenu.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+                            getAddEmployeeContent();
+                            itBorderPane.setCenter(itPanelView);
+                            BorderPane.setMargin(itPanelView, new Insets(100, 0, 0, 200));
+
+                        }
+		});
+                  viewEmployeesMenu.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+                            getViewAllContent();
+                            itBorderPane.setCenter(itPanelView);
+                            BorderPane.setMargin(itPanelView, new Insets(100, 0, 0, 200));
+
+
+                        }
+		});
+                itBorderPane.setLeft(getITMenu());
+                 itBorderPane.setMaxSize(600, 600);
+                getViewAllContent();
+                Scene scene = new Scene(itBorderPane, 2000,1500);
+                ITStage.setScene(scene);
+                ITStage.showAndWait();
+                    }
+                          });
 	}
+        public GridPane getITMenu(){
+            GridPane menu = new GridPane();
+            menu.add(addUserMenu,0,0);
+            menu.add(viewEmployeesMenu,0,1);
+            return menu;
+        }
+        public void getAddEmployeeContent(){
+            itPanelView.getChildren().clear();
+            itPanelView.add(lblFirstName, 0, 0);
+            itPanelView.add(firstnameTextField,1,0);
+            itPanelView.add(lblLastName, 0, 1);
+            itPanelView.add(lastnameTextField, 1, 1);
+            itPanelView.add(lblPassword,0,2);
+            itPanelView.add(passwordTextField, 1, 2);
+            itPanelView.add(lblRetype, 0, 3);
+            itPanelView.add(rePasswordTextField, 1, 3);
+            itPanelView.add(rdbtnCashier, 0, 4);
+            itPanelView.add(rdbtnIt, 0, 5);
+            itPanelView.add(rdbtnManager, 0, 6);
+            itPanelView.add(btnSignUp, 0, 7);
+        }
+          public void getViewAllContent(){
+            itPanelView.getChildren().clear();
+            itPanelView.add(btnView, 0, 0);
+            itPanelView.add(employeeTextArea, 0, 1);
+        }
+        
+       public GridPane getContents(){
+           return itPanelView;
+       }
 }
