@@ -34,9 +34,18 @@ import javafx.scene.control.ScrollPane;
 
 
 
-public class ViewPanel {
+public class ViewPanel extends GridPane {
 
         private Stage viewStage;
+       private Button btnViewInventory;
+       private Button btnClearContent;		
+       private Button btnViewTransactions;
+       private Button btnViewSupplier;
+       private TextArea textArea;
+       private ScrollPane sPane;
+
+
+
 
     /**
 	 * Create the application.
@@ -49,18 +58,15 @@ public class ViewPanel {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-            Platform.runLater(new Runnable() {
 
-                @Override
-                public void run() {           
+                  
 		viewStage = new Stage();
                 viewStage.setTitle("View Panel");
-                GridPane vPane = new GridPane();
-                Button btnViewInventory = new Button("view Inventory");
-		Button btnClearContent = new Button("Clear");		
+                 btnViewInventory =new Button("View Inventory");
+		 btnClearContent = new Button("Clear");		
 		
-		TextArea textArea = new TextArea();
-                ScrollPane sPane = new ScrollPane();
+	        textArea = new TextArea();
+                sPane = new ScrollPane();
                 sPane.setContent(textArea);
 		btnClearContent.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
@@ -75,7 +81,7 @@ public class ViewPanel {
 			}
 		});
 				
-		Button btnViewTransactions = new Button("view Trans.");
+		 btnViewTransactions = new Button("View Trans.");
 		btnViewTransactions.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
 			ExeQuery test = new ExeQuery();
@@ -84,25 +90,46 @@ public class ViewPanel {
 			}
 		});
 		
-		Button btnViewSupplier = new Button("view Supplier");
+		 btnViewSupplier = new Button("View Suppliers");
 		btnViewSupplier.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent arg0) {
 				ExeQuery test = new ExeQuery();
 				textArea.setText((String)test.test("view_suppliers",null));
 			}
 		});
-                        vPane.add(btnViewInventory, 0, 0);
-                        vPane.add(btnClearContent, 1, 0);
-                        vPane.add(btnViewSupplier,2,0);
-                        vPane.add(btnViewTransactions, 3, 0);
-                        vPane.add(textArea, 2, 1);
-                        Scene viewScene = new Scene(vPane,1000,1000);
-                        viewStage.setScene(viewScene);
-                        viewStage.showAndWait();
+                        add(btnViewInventory, 0, 0);
+                        add(btnClearContent, 1, 0);
+                        add(btnViewSupplier,2,0);
+                        add(btnViewTransactions, 3, 0);
+                        add(textArea, 2, 1);
                   }
-            });
-	}
-        
+                
+            
+           
+	
+             public GridPane getViewPanel(){
+            return this;
+        }
+            public GridPane getMenu(){
+                
+                GridPane menu = new GridPane();
+                btnClearContent.setMinWidth(200);
+                btnViewInventory.setMinWidth(200);
+                btnViewSupplier.setMinWidth(200);
+                btnViewTransactions.setMinWidth(200);
+
+                menu.add(btnViewInventory,0,0);
+                menu.add(btnClearContent,1,0);
+                menu.add(btnViewSupplier,2,0);
+                menu.add(btnViewTransactions, 3, 0);
+                return menu;
+            }
+            public GridPane getContents(){
+                GridPane contents = new GridPane();
+                contents.add(sPane, 0, 0);
+                return contents;
+            }
+            
         
         
 }

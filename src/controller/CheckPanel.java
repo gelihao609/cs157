@@ -22,15 +22,40 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class CheckPanel {
+public class CheckPanel extends GridPane{
 
 	private TextField itmIDtextField;
 	private TextField quantiTextField;
 	private TextField earningTextField;
 	private TextField supplierIdtextField;
- private DatePicker fromDate = new DatePicker();
-                     private   DatePicker toDate = new DatePicker();
+        private Button earningBtn = new Button("Get Earnings");
+        Label lblStart = new Label("Start Date:");
+	Label lblEndDate = new Label("End Date:");
+        private DatePicker fromDate = new DatePicker();
+        private DatePicker toDate = new DatePicker();
+        Button chkItmMltiSplbutton;		
+        Button chkCshConbutton;
+        private ScrollPane mainScrollPane = new ScrollPane();		
+	private TextArea mainTextArea = new TextArea();
+	private Button findSupBtn = new Button("Find Supplier");
+        private Button findLowInvenBtn = new Button("Find Low Inventory");
+        Button notSoldBtn = new Button("Items not Sold");
+        Button btnClear = new Button("Clear");		
+        Button suppBtn = new Button("Find Item By Supplier");
+        private Label lblFindItemBelow = new Label("Find item below quantity of:");		
+        private Label lblFind = new Label("Find item by supplierId:");
+        private Label lblFindSupplierFor = new Label("Find supplier by itemId:");
+        private Button getItemBySupplierID = new Button("Find Item By Supplier");
+        private Button getEarningMenuButton = new Button("Get Earnings Info");
+        private Button getLowOnInvenButton = new Button("Low Inventory");
+        private Button getItemsNotSold = new Button("Items Not Sold");
+        private Button getSupplierByItemID = new Button("Get Supplier By Item");
+        private Button getTransCount = new Button("Get Transaction Count");
+        private Button getMultiSuppliers = new Button("Multiple Suppliers");
 
+        private GridPane contentView ;
+
+      
 	/**
 	 * Launch the application.
 	 */
@@ -62,65 +87,29 @@ public class CheckPanel {
 	 */
 	private void initialize() {
            
-            Platform.runLater(new Runnable() {
 
-                @Override
-                public void run() {
-            Stage checkAndFindStage = new Stage();
+                Stage checkAndFindStage = new Stage();
             GridPane gPane = new GridPane();
+           contentView= new GridPane();
            
            
-           
-		Button chkCshConbutton = new Button("Go");
+		 chkCshConbutton = new Button("Check Cashier Trans. Count ");
+		Label lblCheckCashiersTransaction = new Label("Check cashier's transaction counts:");		
+		Label lblCheckItemsHave = new Label("Check items have multiple suppliers:");		
+		chkItmMltiSplbutton = new Button("Check Multiple Suppliers");		
 		
-		Label lblCheckCashiersTransaction = new Label("Check cashier's transaction counts:");
-		
-		Label lblCheckItemsHave = new Label("Check items have multiple suppliers:");
-		
-		Button chkItmMltiSplbutton = new Button("Go");
-		
-		ScrollPane mainScrollPane = new ScrollPane();
-		
-		TextArea mainTextArea = new TextArea();
 		mainTextArea.setEditable(false);
-		mainScrollPane.setContent(mainTextArea);
-		
-		Label lblFindSupplierFor = new Label("Find supplier by itemId:");
-		
-		itmIDtextField = new TextField();
-		
-		
-		Button findSupBtn = new Button("Go");		
-		Label lblFindItemBelow = new Label("Find item below quantity of:");
-		
-		quantiTextField = new TextField();
-		
-		Button findLowInvenBtn = new Button("Go");
-		
-		Label lblGetEarning = new Label("Start Date:");
-		
-		
-		
-		
-		
-		Label lblEndDate = new Label("End Date:");
-		
+		mainScrollPane.setContent(mainTextArea);		
+		itmIDtextField = new TextField();		
+		quantiTextField = new TextField();		
 		earningTextField = new TextField();
-		earningTextField.setEditable(false);
+		earningTextField.setEditable(false);		
+		earningBtn = new Button("Get Earnings");		
+		Label lblCheckItemsNot = new Label("Check items not been sold yet:");		
 		
-		Button earningBtn = new Button("Get Earnings");
-		
-		Button btnClear = new Button("Clear");
-		
-		Label lblCheckItemsNot = new Label("Check items not been sold yet:");
-		
-		Button notSoldBtn = new Button("Go");
-		
-		Label lblFind = new Label("Find item by supplierId:");
 		
 		supplierIdtextField = new TextField();
 		
-		Button suppBtn = new Button("Go");
 		
 		btnClear.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
 
@@ -229,16 +218,138 @@ alert.showAndWait();
 				else earningTextField.setText(result);
 			}
 		});
-         
-            gPane.add(fromDate, 0, 0);
-            gPane.add(toDate,0,1);
-            gPane.add(earningTextField,1,0);
-            gPane.add(earningBtn, 1, 1);
-             Scene candf = new Scene(gPane,500,500);
-            checkAndFindStage.setScene(candf);
-            checkAndFindStage.showAndWait();
-                }
-            });
+                getEarningMenuButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+                                getEarnings();
+                        }
+		});
+                 getLowOnInvenButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+                                findLowInventory();
+
+                        }
+		});
+                 getItemsNotSold.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+                                findItemsNotSold();
+
+                        }
+		});
+                     getItemBySupplierID.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+                                findItemBySupplier();
+
+                        }
+		});
+                     getSupplierByItemID.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+                                findSupplierByItemID();
+
+                        }
+		});
+                     getTransCount.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+                                getTransactionsCount();
+
+                        }
+		});
+                 getMultiSuppliers.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+                                findMultipleSuppliers();
+
+                        }
+		});
+            //Scene candf = new Scene(gPane,500,500);
+            //checkAndFindStage.setScene(candf);
+            //checkAndFindStage.showAndWait();
+                
 		               
 	}
+        public void getEarnings(){
+            //GridPane getEarnings = new GridPane();
+            contentView.getChildren().clear();
+            contentView.add(lblStart,0,0);
+            contentView.add(lblEndDate,1,0);
+            contentView.add(fromDate, 0, 1);
+            contentView.add(toDate,1,1);
+            contentView.add(earningTextField,0,2);
+            contentView.add(earningBtn, 1, 2);
+            
+        }
+        public void findLowInventory(){
+            contentView.getChildren().clear();
+            mainTextArea.setText("");
+            contentView.add(lblFindItemBelow, 0, 0);
+            contentView.add(quantiTextField, 1, 0);
+            contentView.add(findLowInvenBtn, 0, 2);
+            contentView.add(mainScrollPane, 0, 3);
+            contentView.add(btnClear,0,4);
+            
+        }
+        public void findItemsNotSold(){
+            contentView.getChildren().clear();
+             mainTextArea.setText("");
+
+            contentView.add(notSoldBtn, 0, 0);
+            contentView.add(mainScrollPane, 1, 0);
+            contentView.add(btnClear,0,1);
+
+            
+        }
+        public void findItemBySupplier(){
+            contentView.getChildren().clear();
+                        mainTextArea.setText("");
+
+            contentView.add(lblFind, 0, 0);
+            contentView.add(supplierIdtextField, 1, 0);
+            contentView.add(suppBtn,0,1);
+            contentView.add(mainScrollPane, 0, 2);
+            contentView.add(btnClear,0,3);
+
+            
+        }
+         public void findSupplierByItemID(){
+            contentView.getChildren().clear();
+            mainTextArea.setText("");
+
+            contentView.add(lblFindSupplierFor, 0, 0);
+            contentView.add(itmIDtextField, 1, 0);
+            contentView.add(findSupBtn,0,1);
+            contentView.add(mainScrollPane, 0, 2);
+            contentView.add(btnClear,0,3);
+
+            
+        }
+          public void getTransactionsCount(){
+            contentView.getChildren().clear();
+            mainTextArea.setText("");
+            contentView.add(chkCshConbutton, 0, 0);
+            contentView.add(mainScrollPane, 0, 2);
+            contentView.add(btnClear,0,3);  
+        }
+           public void findMultipleSuppliers(){
+            contentView.getChildren().clear();
+            mainTextArea.setText("");
+            contentView.add(chkItmMltiSplbutton, 0, 0);
+            contentView.add(mainScrollPane, 0, 1);
+            contentView.add(btnClear,0,2);  
+        }
+        
+        public GridPane getContents(){
+           return contentView;
+        }
+         public GridPane getMenu(){
+            GridPane menu  = new GridPane();
+            menu.add(getEarningMenuButton, 0, 0);
+            menu.add(getLowOnInvenButton, 1, 0);
+            menu.add(getItemsNotSold,2,0);
+            menu.add(getItemBySupplierID,3,0);
+            menu.add(getSupplierByItemID,4,0);
+            menu.add(getTransCount,5,0);
+            menu.add(getMultiSuppliers,6,0);
+            return menu;
+        }
+         public void setContents(){
+             
+         }
 }

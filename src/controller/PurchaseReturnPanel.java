@@ -24,12 +24,14 @@ import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import javafx.scene.control.ScrollPane;
 
-public class PurchaseReturnPanel {
+public class PurchaseReturnPanel extends GridPane{
 
 	private Stage purchaseReturnStage;
 	private TextField itemTextField;
 	private TextField quantityTextField;
 	private int userid;
+        //private GridPane purchaseReturnPane ;
+
 
 	/**
 	 * Launch the application.
@@ -51,6 +53,7 @@ public class PurchaseReturnPanel {
 	 */
 	public PurchaseReturnPanel(int id) {
 		initialize(id);
+                 
 	}
 
 	/**
@@ -61,17 +64,17 @@ public class PurchaseReturnPanel {
 
                 @Override
                 public void run() {
-              purchaseReturnStage= new Stage();
-            GridPane purchaseReturnPane = new GridPane();
+             purchaseReturnStage= new Stage();
+            // purchaseReturnPane = new GridPane();
 		userid = id;
 		Label lblItem = new Label("Item:");
-		purchaseReturnPane.add(lblItem, 0, 0);
+		add(lblItem, 0, 0);
 		Label lblQuantity = new Label("Quantity:");
-		purchaseReturnPane.add(lblQuantity, 2, 0);
+		add(lblQuantity, 0, 1);
 		itemTextField = new TextField();
-                purchaseReturnPane.add(itemTextField, 1, 0);
+                add(itemTextField, 1, 0);
                 quantityTextField = new TextField();		
-		purchaseReturnPane.add(quantityTextField, 3, 0);
+		add(quantityTextField, 1, 1);
 
 		Button btnPurchase = new Button("Purchase");
 		btnPurchase.setOnAction(new EventHandler<ActionEvent>() {
@@ -119,7 +122,9 @@ alert.showAndWait();
 				}
 			}
 		});
-				purchaseReturnPane.add(btnPurchase, 0, 2);
+                GridPane.setMargin(btnPurchase, new Insets(10, 30, 0, 0));
+
+                add(btnPurchase, 0, 2);
 
 		Button btnReturn = new Button("Return");
 		btnReturn.setOnAction(new EventHandler<ActionEvent>() {
@@ -151,16 +156,22 @@ alert.showAndWait();
 
 			}
 		});
-                		purchaseReturnPane.add(btnReturn, 1, 2);
+                                GridPane.setMargin(btnReturn, new Insets(10, 0, 0, 0));
 
-              Scene scene = new Scene(purchaseReturnPane, 3000,1500);
-              purchaseReturnStage.setScene(scene);
-                            purchaseReturnStage.showAndWait();
+                		add(btnReturn, 1, 2);
+
+             // Scene scene = new Scene(purchaseReturnPane, 3000,1500);
+              //purchaseReturnStage.setScene(scene);
+                            //purchaseReturnStage.showAndWait();
                             
-                            
+                      
                             
                             
                   }
             });            
 	}
+        public GridPane getPurchaseReturnPanel(){
+            return this;
+        }
+        
 }

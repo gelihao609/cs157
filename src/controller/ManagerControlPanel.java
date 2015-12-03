@@ -24,6 +24,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
@@ -64,10 +65,13 @@ public class ManagerControlPanel {
                Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
+           
               managerStage= new Stage();
               managerStage.setTitle("Manager Control Panel");
               GridPane mPanel = new GridPane();
-                     
+                                  BorderPane managerPanel = new BorderPane();
+                                      managerPanel.setPadding(new Insets(10, 20, 10, 20));
+
 		userid=id;
 		Button btnPurchasereturn = new Button("Purchase&Return");
 		btnPurchasereturn.setOnAction(new EventHandler<ActionEvent>() {
@@ -75,8 +79,15 @@ public class ManagerControlPanel {
 				                        Platform.runLater(new Runnable() {
 					public void run() {
 						try {
-							new PurchaseReturnPanel(userid);
-						} catch (Exception e) {
+                                                    PurchaseReturnPanel x = new PurchaseReturnPanel(userid); 
+                                                    GridPane purchasePanel = x.getPurchaseReturnPanel();
+                                                    BorderPane.setMargin(purchasePanel, new Insets(200,200,200,200));
+                                                    managerPanel.setCenter(purchasePanel);
+                                                    managerPanel.setTop(null);
+                                                    managerPanel.setRight(null);
+
+
+                                                } catch (Exception e) {
 							e.printStackTrace();
 						}
 					}
@@ -84,6 +95,7 @@ public class ManagerControlPanel {
 			}
 		});
                 btnPurchasereturn.setMinSize(300, 300);
+                //btnPurchasereturn.setStyle("-fx-background-color: blue");
 		mPanel.add(btnPurchasereturn, 0, 0);
 		Button btnView = new Button("View...");
 		btnView.setOnAction(new EventHandler<ActionEvent>() {
@@ -91,7 +103,18 @@ public class ManagerControlPanel {
 				Platform.runLater(new Runnable() {
 					public void run() {
 						try {
-							new ViewPanel();
+					            ViewPanel x = new ViewPanel(); 
+                                                     managerPanel.setRight(null);
+
+                                                    GridPane viewMenu = x.getMenu();
+                                                    GridPane contents = x.getContents();
+                                                    BorderPane.setMargin(contents, new Insets(0, 0, 0, 300));
+
+                                                    BorderPane.setMargin(viewMenu, new Insets(0, 0, 0, 570));
+                                                    managerPanel.setTop(viewMenu);
+                                                    managerPanel.setCenter(contents);
+                                                    
+                                                    
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -108,7 +131,10 @@ public class ManagerControlPanel {
 				Platform.runLater(new Runnable() {
 					public void run() {
 						try {
-							 new ArchivePanel();
+							ArchivePanel x= new ArchivePanel();
+                                                        managerPanel.setRight(null);
+                                                        managerPanel.setTop(null);
+                                                        managerPanel.setCenter(x.getArchivePanel());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -127,22 +153,47 @@ public class ManagerControlPanel {
 		Button btnCheckfind = new Button("Check&Find");
 		btnCheckfind.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
-				new CheckPanel();
-			}
+                                CheckPanel x = new CheckPanel();
+                                managerPanel.setRight(null);
+                                GridPane menu = x.getMenu();
+                                BorderPane.setMargin(menu, new Insets(0, 0, 0, 400));
+
+                                managerPanel.setTop(menu);
+                                GridPane contents = x.getContents();
+                                BorderPane.setMargin(contents, new Insets(100, 0, 0, 250));
+
+                                managerPanel.setCenter(contents);
+                                /*GridPane checkPanel = new GridPane();
+                                GridPane menu = x.findLowInventory();
+                                GridPane view = x.getContents();
+                                checkPanel.add(menu, 0, 0);
+                                checkPanel.add(view,0,1);
+                                managerPanel.setCenter(checkPanel);
+                                        */
+
+                        }
 		});
                 btnCheckfind.setMinSize(300, 300);
 		mPanel.add(btnCheckfind, 0, 2);
 		Button btnModify = new Button("Modify...");
 		btnModify.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
-				new ModifyPanel();
-			}
+                                ModifyPanel x = new ModifyPanel();
+                                GridPane menu = x.getMenu();
+                                BorderPane.setMargin(menu, new Insets(0, 0, 0, 500));
+
+                                managerPanel.setTop(menu);
+                                GridPane view = x.getView();
+                                managerPanel.setCenter(view);
+                                managerPanel.setRight(x.getResult());
+                        }
 		});
                 btnModify.setMinSize(300, 300);
                 mPanel.add(btnModify, 0, 3);
-                
-                Scene scene = new Scene(mPanel, 3000,1500);
-              managerStage.setScene(scene);
+                 managerPanel.setLeft(mPanel);
+                Scene scene = new Scene(managerPanel, 2000,1500);
+                  //managerPanel.setStyle("-fx-background-color: black");
+                 managerStage.setScene(scene);
                             managerStage.showAndWait();
                      }
                 });  

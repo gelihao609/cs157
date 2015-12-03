@@ -1,17 +1,23 @@
 package controller;
 import javax.swing.JFrame;
-import com.toedter.calendar.JDateChooser;
 import backend.ExeQuery;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
-import java.awt.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 
 public class ArchivePanel {
 
-	private JFrame frame;
-
+private GridPane archiveViewPanel = new GridPane();
 	/**
 	 * Create the application.
 	 */
@@ -23,28 +29,26 @@ public class ArchivePanel {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame("Archive");
-		frame.setBounds(100, 100, 290, 155);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		frame.setVisible(true);
-		JDateChooser dateChooser = new JDateChooser();
-		dateChooser.setBounds(159, 13, 100, 22);
-		frame.getContentPane().add(dateChooser);
+		DatePicker dateChooser = new DatePicker();
 		
-		JLabel lblChooseACutoff = new JLabel("Choose a cutOff time:");
-		lblChooseACutoff.setBounds(12, 19, 135, 16);
-		frame.getContentPane().add(lblChooseACutoff);
+		Label lblChooseACutoff = new Label("Choose a cutOff time:");
 		
-		JButton btnArchive = new JButton("Archive");
-		btnArchive.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Date cutOff = dateChooser.getDate();
+		Button btnArchive = new Button("Archive");
+		btnArchive.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent arg0) {
+				LocalDate cutOffLD = dateChooser.getValue();
+                                Instant cutOffInstant = cutOffLD.atStartOfDay(ZoneId.systemDefault()).toInstant();
+                                Date cutOff =Date.from(cutOffInstant);
 				ExeQuery test = new ExeQuery();
 				test.test("archive",cutOff);
 			}
 		});
-		btnArchive.setBounds(12, 66, 97, 25);
-		frame.getContentPane().add(btnArchive);
+                archiveViewPanel.add(lblChooseACutoff,0, 0);
+                archiveViewPanel.add(dateChooser,1, 0);
+                archiveViewPanel.add(btnArchive, 2,0);
 	}
+        
+        public GridPane getArchivePanel(){
+            return archiveViewPanel;
+        }
 }

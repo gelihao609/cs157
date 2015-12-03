@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -26,10 +27,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -42,12 +46,20 @@ public class Login extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-       
-        Button btn = new Button();
-        btn.setText("LOGIN");
-      
+       employeeID.setStyle("-fx-border-color: blue;-fx-border-width: 6px ;");
+             password.setStyle("-fx-border-color: blue;-fx-border-width: 6px ;");
+
+      Image login = new Image(getClass().getResourceAsStream("loginButton.png"));
+      Button btn = new Button("",new ImageView(login));
+      btn.autosize();
                 Label userName = new Label("Employee ID:");
-                                   Label pw = new Label("Password");
+                userName.setStyle("-fx-font-weight:bolder;");
+                
+                userName.setTextFill(Color.WHITE);
+                                   Label pw = new Label("Password:");
+                                                   pw.setTextFill(Color.WHITE);
+                                                   pw.setStyle("-fx-font-weight:bolder;");
+
 
         GridPane root = new GridPane();
                 root.add(userName, 0, 0);
@@ -57,20 +69,23 @@ public class Login extends Application {
                 root.add(btn, 1, 3);
                 root.setHgap(10);
                 root.setVgap(10);
-                GridPane.setMargin(userName, new Insets(30, 10, 25, 200));
+                GridPane.setMargin(userName, new Insets(0, 10, 0, 10));
                 GridPane.setMargin(employeeID, new Insets(30, 10, 25, 20));
-                GridPane.setMargin(pw, new Insets(5, 10, 25, 200));
+                GridPane.setMargin(pw, new Insets(0, 10, 0, 10));
                 GridPane.setMargin(password, new Insets(5, 10, 25, 20));
                 
 
 
-        Scene scene = new Scene(root, 300, 250);
-        
+        Scene scene = new Scene(root, 200, 250);
+                root.setStyle("-fx-background-color: black");
+
                 
         primaryStage.setTitle("Login into Account");
         primaryStage.setScene(scene);
-        primaryStage.setMinWidth(1500);
+        primaryStage.setMinWidth(700);
                 primaryStage.setMinHeight(500);
+       primaryStage.setMaxHeight(500);
+       primaryStage.setMaxWidth(700);
 
         primaryStage.show();
         
@@ -104,7 +119,7 @@ alert.showAndWait();
 				//manager panel
 				else if(level.equals("manager"))
 				{
-					EventQueue.invokeLater(new Runnable() {
+					Platform.runLater(new Runnable() {
 						public void run() {
 							try {
 								new ManagerControlPanel((int)resultContainer.get(1));
@@ -117,10 +132,11 @@ alert.showAndWait();
 				//IT panel
 				else if(level.equals("IT"))
 				{
-					EventQueue.invokeLater(new Runnable() {
+					Platform.runLater(new Runnable() {
 						public void run() {
 							try {
-								
+					             new ITControlPanel((int)resultContainer.get(1));
+	
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -130,7 +146,7 @@ alert.showAndWait();
 				//Cashier panel
 				else if(level.equals("cashier"))
 				{
-					EventQueue.invokeLater(new Runnable() {
+					Platform.runLater(new Runnable() {
 						public void run() {
 							try {
 					new CashierControlPanel((int)resultContainer.get(1));

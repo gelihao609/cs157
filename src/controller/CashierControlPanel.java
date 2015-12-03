@@ -28,10 +28,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 
 
 
-public class CashierControlPanel {
+public class CashierControlPanel extends GridPane {
         Stage cashierStage;
 	private int userid;
 
@@ -50,30 +51,33 @@ public class CashierControlPanel {
                 @Override
                 public void run() {
                 cashierStage=new Stage();
-                GridPane cashierPanel = new GridPane();
+                    BorderPane cashierPanel = new BorderPane();
 		userid=id;
 		Button btnPurchasereturn = new Button("Purchase/Return");
 		btnPurchasereturn.setOnAction(new EventHandler<ActionEvent>() {
                 public void handle(ActionEvent arg0) {
-				EventQueue.invokeLater(new Runnable() {
+				Platform.runLater(new Runnable() {
 					public void run() {
 						try {
-							new PurchaseReturnPanel(userid);
-						} catch (Exception e) {
+                PurchaseReturnPanel x = new PurchaseReturnPanel(userid);                                                                  
+                cashierPanel.setRight(x.getPurchaseReturnPanel());
+                
+                
+
+                                                } catch (Exception e) {
 							e.printStackTrace();
 						}
 					}
 				});
 			}
 		});
-		cashierPanel.add(btnPurchasereturn, 0, 2);
+		cashierPanel.setTop(btnPurchasereturn);
 		Label lblCashierControl = new Label("Cashier Control");
-		cashierPanel.add(lblCashierControl, 0, 0);
+		cashierPanel.setBottom(lblCashierControl);
                 Label lblId = new Label("ID:"+userid);
-                cashierPanel.add(lblId, 0, 1);
+                cashierPanel.setLeft(lblId);
                 
-                
-              Scene scene = new Scene(cashierPanel, 500,500);
+              Scene scene = new Scene(cashierPanel, 1500,500);
               cashierStage.setScene(scene);
                             cashierStage.showAndWait();
                    }
