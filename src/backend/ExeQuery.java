@@ -103,7 +103,8 @@ public class ExeQuery {
 				ArrayList<String> container = (ArrayList<String>) arg;
         		String name = container.get(0);
         		String price = container.get(1);
-        		return q.addItem(stmt,name,price);
+        		String newId = container.get(2);
+        		return q.addItem(stmt,name,price,newId);
         	}
         	if(cmd.equals("modifyItem"))
         	{
@@ -127,6 +128,27 @@ public class ExeQuery {
         		String level = container.get(3);
         		return q.signUp(stmt,firstname,lastname,password,level);
         	}
+        	if(cmd.equals("removeItem"))
+        	{
+        		String id = (String) arg;
+        		return q.removeItem(stmt,id);
+        	}
+        	if(cmd.equals("removeInventory"))
+        	{
+        		String id = (String) arg;
+        		return q.removeInventory(stmt,id);
+        	}
+        	if(cmd.equals("removeTransaction"))
+        	{
+        		String id = (String) arg;
+        		return q.removeTransaction(stmt,id);
+        	}
+        	if(cmd.equals("removeSupply"))
+        	{
+        		String id = (String) arg;
+        		return q.removeSupply(stmt,id);
+        	}
+
     	} catch (SQLException e) {
     		System.out.println("Connection Failed! Check output console");
     		e.printStackTrace();

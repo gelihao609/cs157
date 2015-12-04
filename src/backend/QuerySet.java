@@ -386,19 +386,26 @@ public class QuerySet {
 	}
 		else return "NoPointer";
 	}
-	public String addItem(Statement stmt, String name, String price) {
+	public String addItem(Statement stmt, String name, String price, String id) {
 		if(name.length()!=0 && price.length()!=0)
 		{
-			String q="Insert into item(item_name,item_price) "
-					+ "values(\""+name+"\","+price+")";
+			String q="";
+			if(id.length()==0) { q="Insert into item(item_name,item_price) "
+					+ "values(\""+name+"\","+price+")";}
+			else
+			{
+				int idInt = Integer.parseInt(id);
+			 q="Insert into item(item_id,item_name,item_price) "
+						+ "values("+idInt+","+"\""+name+"\","+price+")";
+			}
 			String result="";
 			try {
 				int rs = stmt.executeUpdate(q);
 				if(rs==0) result="ViolateRule";
 				else result ="success";
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if(e.getErrorCode()==1062) result="DuplicateKey";
+				else e.printStackTrace();
 			}
 			return result;
 		}
@@ -460,5 +467,54 @@ public class QuerySet {
 		}
 		else
 		return "NoPointer";
+	}
+	public Object removeItem(Statement stmt, String id) {
+		String q="DELETE FROM item WHERE item_id ="+id;
+		String result="";
+		try {
+			int rs = stmt.executeUpdate(q);
+			if(rs==0) result="ViolateRule";
+			else result ="success";
+		} catch (SQLException e) {
+			if(e.getErrorCode()==1451) result = "foreignKeyViolate";
+			else e.printStackTrace();
+		}
+		return result;
+	}
+	public Object removeInventory(Statement stmt, String id) {
+		String q="DELETE FROM inventory WHERE iditem ="+id;
+		String result="";
+		try {
+			int rs = stmt.executeUpdate(q);
+			if(rs==0) result="ViolateRule";
+			else result ="success";
+		} catch (SQLException e) {
+			 e.printStackTrace();
+		}
+		return result;
+	}
+	public Object removeTransaction(Statement stmt, String id) {
+		String q="DELETE FROM transactions WHERE item_id ="+id;
+		String result="";
+		try {
+			int rs = stmt.executeUpdate(q);
+			if(rs==0) result="ViolateRule";
+			else result ="success";
+		} catch (SQLException e) {
+			 e.printStackTrace();
+		}
+		return result;
+	}
+	public Object removeSupply(Statement stmt, String id) {
+		String q="DELETE FROM supply WHERE iditem ="+id;
+		String result="";
+		try {
+			int rs = stmt.executeUpdate(q);
+			if(rs==0) result="ViolateRule";
+			else result ="success";
+		} catch (SQLException e) {
+			 e.printStackTrace();
+		}
+		return result;
 	}
 }
