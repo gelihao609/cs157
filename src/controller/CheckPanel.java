@@ -55,7 +55,7 @@ public class CheckPanel {
 	private void initialize() {
 		frame = new JFrame("Check & Find Panel");
 		frame.setBounds(100, 100, 542, 414);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
 		JButton chkCshConbutton = new JButton("Go");

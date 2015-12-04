@@ -29,7 +29,7 @@ public class CashierControlPanel {
 		userid=id;
 		cashierFrame = new JFrame("Cashier Control Panel");
 		cashierFrame.setBounds(100, 100, 183, 151);
-		cashierFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		cashierFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		cashierFrame.getContentPane().setLayout(null);
 		cashierFrame.setVisible(true);
 		JButton btnPurchasereturn = new JButton("Purchase/Return");
@@ -55,7 +55,7 @@ public class CashierControlPanel {
 		lblCashierControl.setBounds(12, 13, 138, 16);
 		cashierFrame.getContentPane().add(lblCashierControl);
 		
-		JLabel lblId = new JLabel("ID:");
+		JLabel lblId = new JLabel("ID: "+id);
 		lblId.setBounds(22, 38, 56, 16);
 		cashierFrame.getContentPane().add(lblId);
 	}

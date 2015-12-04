@@ -51,7 +51,7 @@ public class PurchaseReturnPanel {
 		CashierFrame = new JFrame();
 		userid = id;
 		CashierFrame.setBounds(100, 100, 253, 160);
-		CashierFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		CashierFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		CashierFrame.getContentPane().setLayout(null);
 		CashierFrame.setVisible(true);
 		JLabel lblItem = new JLabel("Item:");

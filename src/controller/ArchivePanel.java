@@ -25,7 +25,7 @@ public class ArchivePanel {
 	private void initialize() {
 		frame = new JFrame("Archive");
 		frame.setBounds(100, 100, 290, 155);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
 		JDateChooser dateChooser = new JDateChooser();

@@ -52,7 +52,7 @@ public class ModifyPanel {
 	private void initialize() {
 		frame = new JFrame("Modify Panel");
 		frame.setBounds(100, 100, 450, 359);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
 		JLabel lblAddItem = new JLabel("Add item:");

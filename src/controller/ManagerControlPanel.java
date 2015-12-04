@@ -43,7 +43,7 @@ public class ManagerControlPanel {
 		userid=id;
 		managerFrame = new JFrame("Manager Control Panel");
 		managerFrame.setBounds(100, 100, 180, 309);
-		managerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		managerFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		managerFrame.getContentPane().setLayout(null);
 		managerFrame.setVisible(true);
 
@@ -104,8 +104,8 @@ public class ManagerControlPanel {
 		lblManagerControl.setBounds(12, 13, 138, 16);
 		managerFrame.getContentPane().add(lblManagerControl);
 		
-		JLabel lblId = new JLabel("ID:");
-		lblId.setBounds(22, 33, 32, 16);
+		JLabel lblId = new JLabel("ID: "+userid);
+		lblId.setBounds(22, 33, 60, 16);
 		managerFrame.getContentPane().add(lblId);
 		
 		JButton btnCheckfind = new JButton("Check&Find");

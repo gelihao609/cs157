@@ -60,7 +60,7 @@ public class ITControlPanel {
 	private void initialize(int id) {
 		frame = new JFrame("IT Control Panel");
 		frame.setBounds(100, 100, 377, 388);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
 		userid=id;
